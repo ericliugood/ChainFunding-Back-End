@@ -17,6 +17,9 @@ class UserDatas(AbstractBaseUser):
     walletAddress = models.CharField(max_length=36)
     evaluation = models.PositiveIntegerField(null=True)
 
+    USERNAME_FIELD = 'usernameAccount'
+    REQUIRED_FIELD = ['emailAccount']
+
     class Meta:
         db_table = 'user_datas'
 
