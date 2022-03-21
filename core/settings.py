@@ -37,11 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'account.apps.AccountConfig',
     'database',
-    'api',
-    'account',
-
+    'rest_framework',
     #'bootstrap4',
 ]
 
@@ -86,7 +84,7 @@ DATABASES = {
         'USER': 'cfuser', # username
         'PASSWORD': 'ab12374453', # passwd
         'HOST': 'localhost', # host
-        'PORT': '7948', # port
+        'PORT': '5432', # port
     }
 }
 
@@ -133,6 +131,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTHENTICATION_BACKENDS = ['account.backends.EmailBackend']
-AUTH_USER_MODEL = 'database.UserDatas'

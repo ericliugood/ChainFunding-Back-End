@@ -24,14 +24,7 @@ router = DefaultRouter()
 # account
 router.register('account', AccountViewSet)
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('accounta/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('accounta/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

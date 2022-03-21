@@ -16,9 +16,6 @@ class UserDatas(AbstractBaseUser):
     emailAuth = models.BooleanField(default=False)
     evaluation = models.PositiveIntegerField(null=True)
 
-    USERNAME_FIELD = 'usernameAccount'
-    REQUIRED_FIELD = ['emailAccount']
-
     class Meta:
         db_table = 'user_datas'
 
