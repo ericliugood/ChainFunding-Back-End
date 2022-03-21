@@ -14,11 +14,18 @@ class UserDatas(AbstractBaseUser):
         unique=True
     )
     emailAuth = models.BooleanField(default=False)
-    walletAddress = models.CharField(max_length=36)
     evaluation = models.PositiveIntegerField(null=True)
 
     class Meta:
         db_table = 'user_datas'
+
+class WalletAddress(models.Model):
+    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    walletType = models.CharField(max_length=18)
+    walletAddress = models.CharField(max_length=36)
+
+    class Meta:
+        db_table = 'wallet_address'
 
 
 class TransferLogs(models.Model):
