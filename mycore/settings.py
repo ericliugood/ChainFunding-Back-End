@@ -167,7 +167,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'
 SITE_ID = 1
 
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'myaccount.serializers.UserSeeSerializer',
+    'USER_DETAILS_SERIALIZER': 'myaccount.serializers.AccountSerializer',
 }
 
 # SMTP Configuration
