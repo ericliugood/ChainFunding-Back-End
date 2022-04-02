@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from allauth.account.views import confirm_email
 from django.conf.urls import url
@@ -22,10 +22,10 @@ from django.conf.urls import url
 router = DefaultRouter()
 
 urlpatterns = [
-    path('myapis/', include(router.urls)),
+    path('myapi/', include(router.urls)),
     path('admin/', admin.site.urls),
-    url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
     url(r'^account/', include('allauth.urls')),
     url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
 

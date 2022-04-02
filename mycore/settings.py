@@ -37,13 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # rest framework
     'rest_framework',
+    # rest auth
+    'rest_auth',
     'rest_framework.authtoken',
+    # allauth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'rest_auth',
     'rest_auth.registration',
+    # apps
     'myaccount',
     'mydatabase',
     'myapi',
@@ -85,23 +89,23 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql', # postgresql
-#         'NAME': 'c65', # database name
-#         'USER': 'cfuser', # username
-#         'PASSWORD': 'ab12374453', # passwd
-#         'HOST': 'localhost', # host
-#         'PORT': '7948', # port
+#         'ENGINE': 'django.db.backends.postgresql',  # postgresql
+#         'NAME': 'c65',  # database name
+#         'USER': 'cfuser',  # username
+#         'PASSWORD': 'ab12374453',  # passwd
+#         'HOST': 'localhost',  # host
+#         'PORT': '7948',  # port
 #     }
 # }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', # postgresql
-        'NAME': 'chainfunding', # database name
-        'USER': 'cfuser', # username
-        'PASSWORD': 'ab12374453', # passwd
-        'HOST': 'localhost', # host
-        'PORT': '5432', # port
+        'ENGINE': 'django.db.backends.postgresql',  # postgresql
+        'NAME': 'chainfunding',  # database name
+        'USER': 'cfuser',  # username
+        'PASSWORD': 'ab12374453',  # passwd
+        'HOST': 'localhost',  # host
+        'PORT': '5432',  # port
     }
 }
 
@@ -151,14 +155,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'mydatabase.UserDatas'
 
+# Set rest_auth, allauth
+
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     'allauth.account.auth_backends.AuthenticationBackend',
     )
 
-ACCOUNT_AUTHENTICATION_METHOD='username_email'
-ACCOUNT_USER_MODEL_USERNAME_FIELD='usernameAccount'
-ACCOUNT_USER_MODEL_EMAIL_FIELD='emailAccount'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'usernameAccount'
+ACCOUNT_USER_MODEL_EMAIL_FIELD = 'emailAccount'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
