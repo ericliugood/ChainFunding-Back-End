@@ -19,10 +19,15 @@ from rest_framework.routers import DefaultRouter
 from allauth.account.views import confirm_email
 from django.conf.urls import url
 
+# mysearcher
+from mysearcher.views import SearcherViewSet
+
 router = DefaultRouter()
 
+router.register('search/', SearcherViewSet, basename='search')
+
 urlpatterns = [
-    path('myapi/', include(router.urls)),
+    path('', include(router.urls)),
     path('admin/', admin.site.urls),
     url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
