@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 #         'USER': 'cfuser',  # username
 #         'PASSWORD': 'ab12374453',  # passwd
 #         'HOST': 'localhost',  # host
-#         'PORT': '7948',  # port
+#         'PORT': '9696',  # port
 #     }
 # }
 
@@ -171,6 +171,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+OLD_PASSWORD_FIELD_ENABLED = True
 
 SITE_ID = 1
 
@@ -183,6 +184,6 @@ REST_AUTH_SERIALIZERS = {
 EMAIL_HOST = 'mail.gandi.net'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-EMAIL_HOST_USER = '*'  
+EMAIL_HOST_USER = '*' 
 EMAIL_HOST_PASSWORD = '*'  
 DEFAULT_FROM_EMAIL = '*'
