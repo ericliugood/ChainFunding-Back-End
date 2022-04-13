@@ -79,3 +79,12 @@ class FundingShares(models.Model):
 
     class Meta:
         db_table = 'funding_shares'
+
+
+class Notice(models.Model):
+    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    notice = models.TextField
+    read = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'notice'
