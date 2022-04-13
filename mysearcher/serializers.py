@@ -6,3 +6,4 @@ class SearcherSerializer(ModelSerializer):
     class Meta:
         model = FundingProjects
         fields = '__all__'
+        
