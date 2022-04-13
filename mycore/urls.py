@@ -24,7 +24,7 @@ from mysearcher.views import SearcherViewSet
 
 router = DefaultRouter()
 
-router.register('search/', SearcherViewSet, basename='search')
+router.register('search', SearcherViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -33,5 +33,4 @@ urlpatterns = [
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
     url(r'^account/', include('allauth.urls')),
     url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
-
 ]
