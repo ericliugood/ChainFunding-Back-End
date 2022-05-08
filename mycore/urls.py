@@ -21,13 +21,15 @@ from django.conf.urls import url
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
-
+from mywallet.views import WalletAddressViewSet
 router = DefaultRouter()
 
 router.register('search', SearcherViewSet)
+router.register('wallet',WalletAddressViewSet)
+
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('myapi/', include(router.urls)),
     path('admin/', admin.site.urls),
     url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
