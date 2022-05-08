@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-#         'NAME': 'c65',  # database name
+#         'NAME': 'a1',  # database name
 #         'USER': 'cfuser',  # username
 #         'PASSWORD': 'ab12374453',  # passwd
 #         'HOST': 'localhost',  # host
@@ -184,6 +184,13 @@ REST_AUTH_SERIALIZERS = {
 EMAIL_HOST = 'mail.gandi.net'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-EMAIL_HOST_USER = '*' 
-EMAIL_HOST_PASSWORD = '*'  
-DEFAULT_FROM_EMAIL = '*'
+EMAIL_HOST_USER = '' 
+EMAIL_HOST_PASSWORD = ''  
+DEFAULT_FROM_EMAIL = ''
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
