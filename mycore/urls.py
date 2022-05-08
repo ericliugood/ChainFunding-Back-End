@@ -21,7 +21,7 @@ from django.conf.urls import url
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
-from myapi.views import WalletAddressViewSet
+from mywallet.views import WalletAddressViewSet
 router = DefaultRouter()
 
 router.register('search', SearcherViewSet)
