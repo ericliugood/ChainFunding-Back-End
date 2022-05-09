@@ -84,7 +84,7 @@ class FundingShares(models.Model):
 
 class Notice(models.Model):
     userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
-    notice = models.TextField
+    notice = models.TextField(null=True, blank=True)
     read = models.BooleanField(default=False)
 
     class Meta:
