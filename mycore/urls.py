@@ -23,6 +23,7 @@ from django.conf.urls import url
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet,TransferLogsViewSet
 from mynotice.views import NoticeViewSet
+from myfundingprojects.views import FundingProjectsViewSet
 
 
 router = DefaultRouter()
@@ -31,6 +32,8 @@ router.register('search', SearcherViewSet)
 router.register('wallet',WalletAddressViewSet)
 router.register('transferlog',TransferLogsViewSet)
 router.register('notice',NoticeViewSet)
+router.register('userfundingprojects',FundingProjectsViewSet)
+
 
 
 urlpatterns = [
