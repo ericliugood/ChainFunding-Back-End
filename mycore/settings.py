@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'mydatabase',
     'myapi',
     'mysearcher',
+    'mywallet',
+    'mynotice',
+    'myfundingprojects',
 ]
 
 MIDDLEWARE = [
@@ -181,12 +184,12 @@ REST_AUTH_SERIALIZERS = {
 
 # SMTP Configuration
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.gandi.net'  
+EMAIL_HOST = '*'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-EMAIL_HOST_USER = '' 
-EMAIL_HOST_PASSWORD = ''  
-DEFAULT_FROM_EMAIL = ''
+EMAIL_HOST_USER = '*' 
+EMAIL_HOST_PASSWORD = '*'  
+DEFAULT_FROM_EMAIL = '*'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
