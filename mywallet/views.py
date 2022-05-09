@@ -37,7 +37,7 @@ class TransferLogsViewSet(viewsets.ModelViewSet):
         return super().get_queryset().filter(userData=UserDatas.objects.get(id=self.request.user.id))
     def create(self, request, *args, **kwargs):
         transferLogsdata=request.data
-        print(transferLogsdata)
+
         
         try:
                 new_transferLogs = TransferLogs.objects.create(userData=UserDatas.objects.get(id=self.request.user.id),
