@@ -18,6 +18,6 @@ class Msg:
         nft = "查無此NFT"
         funding_nft = "此NFT無集資項目"
 
-        #
-        project = "查無此集資項目"
+        # funding
+        project = "查無集資項目"
         personal_project = "用戶無集資項目"

@@ -30,6 +30,7 @@ router.register('wallet',WalletAddressViewSet)
 
 urlpatterns = [
     path('myapi/', include(router.urls)),
+    path('', include(router.urls)),
     path('admin/', admin.site.urls),
     url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url

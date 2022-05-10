@@ -19,19 +19,53 @@ class SearcherViewSet(ModelViewSet):
     def project(self, request):  # project nft user
         data = request.query_params
 
-        nid = data.get('nftid')
-        project = FundingProjects.objects.filter(nftId=nid)
-        fundraiser = UserDatas.objects.get(usernameAccount=project.first().fundraiser)
-        if project.exists():
+        nftid = data.get('nftid')
+        fundraiser = data.get('fundraiser')
+
+        if fundraiser is not None:  # find project from raiser
+            fundraiser = UserDatas.objects.get(usernameAccount=fundraiser)  # find fundraiser
+            raiser_project = FundingProjects.objects.filter(fundraiser_id=fundraiser.id)  # find project by raiser
             return success({
-                'nftid': project.first().nftId,
-                'startTime': project.first().startTime,
-                'endTime': project.first().endTime,
-                'token': project.first().token,
-                'butPrice': project.first().buyPrice,
-                'sellPrice': project.first().sellPrice,
-                'gasPrice': project.first().gasPrice,
-                'fundraiser': fundraiser.usernameAccount
+                'project': [{
+                        'id': p.nftId,
+                        'startTime': p.startTime,
+                        'endTime': p.endTime,
+                        'token': p.token,
+                        'butPrice': p.buyPrice,
+                        'sellPrice': p.sellPrice,
+                        'gasPrice': p.gasPrice,
+                        'fundraiser': fundraiser.usernameAccount
+                     }
+                    for p in raiser_project
+                ]
             })
-        else:
-            return notfound(Msg.NotFound.project)
+        elif nftid is not None:  # find project from nftid
+            nft_project = FundingProjects.objects.filter(nftId=nftid)  # find project by nft id
+            return success({
+                'project': [{
+                        'id': p.nftId,
+                        'startTime': p.startTime,
+                        'endTime': p.endTime,
+                        'token': p.token,
+                        'butPrice': p.buyPrice,
+                        'sellPrice': p.sellPrice,
+                        'gasPrice': p.gasPrice
+                    }
+                    for p in nft_project
+                ]
+            })
+        else:  # list all project
+            project = FundingProjects.objects.all()
+            return success({
+                'project': [{
+                        'id': p.nftId,
+                        'startTime': p.startTime,
+                        'endTime': p.endTime,
+                        'token': p.token,
+                        'butPrice': p.buyPrice,
+                        'sellPrice': p.sellPrice,
+                        'gasPrice': p.gasPrice
+                    }
+                    for p in project
+                ]
+            })
