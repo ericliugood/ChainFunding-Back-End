@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from mydatabase.models import FundingProjects,LikeLists,FundingShares
+from mydatabase.models import FundingProjects,FundingShares
 
 
 class FundingProjectsSerializer(ModelSerializer):
@@ -9,11 +9,7 @@ class FundingProjectsSerializer(ModelSerializer):
         fields = ['id','nftId','startTime','endTime','token','buyPrice','sellPrice','gasPrice']
 
 
-class UserLikeListsSerializer(ModelSerializer):
-    
-    class Meta:
-        model=LikeLists
-        fields = ['id','fundingProject']
+
 
 class UserFundingSharesSerializer(ModelSerializer):
     

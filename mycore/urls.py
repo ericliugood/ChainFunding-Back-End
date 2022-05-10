@@ -23,7 +23,8 @@ from django.conf.urls import url
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet,TransferLogsViewSet
 from mynotice.views import NoticeViewSet
-from myfundingprojects.views import FundingProjectsViewSet,UserLikeListsViewSet,UserFundingSharesViewSet
+from myfundingprojects.views import FundingProjectsViewSet,UserFundingSharesViewSet
+from mylikelists.views import UserLikeListsViewSet
 
 
 router = DefaultRouter()
