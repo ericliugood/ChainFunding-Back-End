@@ -21,11 +21,22 @@ from django.conf.urls import url
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
-from mywallet.views import WalletAddressViewSet
+from mywallet.views import WalletAddressViewSet,TransferLogsViewSet
+from mynotice.views import NoticeViewSet
+from myfundingprojects.views import FundingProjectsViewSet,UserFundingSharesViewSet
+from mylikelists.views import UserLikeListsViewSet
+
+
 router = DefaultRouter()
 
 router.register('search', SearcherViewSet)
 router.register('wallet',WalletAddressViewSet)
+router.register('transferlog',TransferLogsViewSet)
+router.register('notice',NoticeViewSet)
+router.register('userfundingprojects',FundingProjectsViewSet)
+router.register('userlikefundingprojects',UserLikeListsViewSet)
+router.register('userfundingshares',UserFundingSharesViewSet)
+
 
 
 urlpatterns = [
