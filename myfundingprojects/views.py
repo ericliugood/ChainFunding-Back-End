@@ -1,9 +1,9 @@
 from mydatabase.models import UserDatas,FundingProjects,FundingShares
-from myfundingprojects.serializers import FundingProjectsSerializer,UserFundingSharesSerializer
+from myfundingprojects.serializers import FundingProjectsSerializer,UserFundingSharesSerializer,FundingProjectsSerializerAdmin
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import  IsAuthenticated
+from rest_framework.permissions import  IsAuthenticated,IsAdminUser
 
 class FundingProjectsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,]
@@ -29,7 +29,14 @@ class FundingProjectsViewSet(viewsets.ModelViewSet):
                 new_fundingProjects.save()
                 return Response(status=status.HTTP_201_CREATED) 
         except:
-                return Response(status=status.HTTP_400_BAD_REQUEST) 
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class FundingProjectsViewSetAdmin(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+
+    serializer_class = FundingProjectsSerializerAdmin
+    queryset = FundingProjects.objects.all()
+
 
 
 

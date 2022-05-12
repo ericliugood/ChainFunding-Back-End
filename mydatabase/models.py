@@ -14,6 +14,12 @@ class UserDatas(AbstractBaseUser):
         max_length=128,
         unique=True
     )
+
+    is_staff = models.BooleanField(
+        ("staff status"),
+        default=False,
+        help_text=("Designates whether the user can log into this admin site."),
+    )
     
     evaluation = models.PositiveIntegerField(null=True)
 
