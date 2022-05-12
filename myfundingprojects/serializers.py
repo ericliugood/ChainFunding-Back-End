@@ -8,6 +8,12 @@ class FundingProjectsSerializer(ModelSerializer):
         model=FundingProjects
         fields = ['id','nftId','startTime','endTime','token','buyPrice','sellPrice','gasPrice']
 
+class FundingProjectsSerializerAdmin(ModelSerializer):
+    
+    class Meta:
+        model=FundingProjects
+        fields = '__all__'
+
 
 
 
