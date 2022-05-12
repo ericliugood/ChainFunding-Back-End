@@ -20,8 +20,6 @@ class UserDatas(AbstractBaseUser):
         default=False,
         help_text=("Designates whether the user can log into this admin site."),
     )
-    
-    evaluation = models.PositiveIntegerField(null=True)
 
     USERNAME_FIELD = 'usernameAccount'
     EMAIL_FIELD = 'emailAccount'
@@ -63,6 +61,7 @@ class FundingProjects(models.Model):
     buyPrice = models.DecimalField(max_digits=128, decimal_places=18)
     sellPrice = models.DecimalField(max_digits=128, decimal_places=18)
     gasPrice = models.DecimalField(max_digits=128, decimal_places=18)
+    evaluation = models.PositiveIntegerField(null=True)
     fundraiser = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
     userLikeList = models.ManyToManyField(UserDatas, through='LikeLists', related_name='userLike')
     userFundingShare = models.ManyToManyField(UserDatas, through='FundingShares', related_name='userFunding')
