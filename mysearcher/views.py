@@ -1,14 +1,10 @@
 from mysearcher.serializers import SearcherSerializer
-from mydatabase.models import FundingProjects
-from mydatabase.models import UserDatas
+from mydatabase.models import FundingProjects, UserDatas
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 
 from myapi.response import *
-from myapi.message import *
-
-# Create your views here.
 
 
 class SearcherViewSet(ModelViewSet):
@@ -27,15 +23,17 @@ class SearcherViewSet(ModelViewSet):
             raiser_project = FundingProjects.objects.filter(fundraiser_id=fundraiser.id)  # find project by raiser
             return success({
                 'project': [{
-                        'id': p.nftId,
-                        'startTime': p.startTime,
-                        'endTime': p.endTime,
-                        'token': p.token,
-                        'butPrice': p.buyPrice,
-                        'sellPrice': p.sellPrice,
-                        'gasPrice': p.gasPrice,
-                        'fundraiser': fundraiser.usernameAccount
-                     }
+                    'nftId': p.nftId,
+                    'nftContractAddress': p.nftContractAddress,
+                    'nftName': p.nftName,
+                    'startTime': p.startTime,
+                    'endTime': p.endTime,
+                    'token': p.token,
+                    'butPrice': p.buyPrice,
+                    'sellPrice': p.sellPrice,
+                    'gasPrice': p.gasPrice,
+                    'fundraiser': fundraiser.usernameAccount
+                }
                     for p in raiser_project
                 ]
             })
@@ -43,14 +41,14 @@ class SearcherViewSet(ModelViewSet):
             nft_project = FundingProjects.objects.filter(nftId=nftid)  # find project by nft id
             return success({
                 'project': [{
-                        'id': p.nftId,
-                        'startTime': p.startTime,
-                        'endTime': p.endTime,
-                        'token': p.token,
-                        'butPrice': p.buyPrice,
-                        'sellPrice': p.sellPrice,
-                        'gasPrice': p.gasPrice
-                    }
+                    'id': p.nftId,
+                    'startTime': p.startTime,
+                    'endTime': p.endTime,
+                    'token': p.token,
+                    'butPrice': p.buyPrice,
+                    'sellPrice': p.sellPrice,
+                    'gasPrice': p.gasPrice
+                }
                     for p in nft_project
                 ]
             })
@@ -58,14 +56,20 @@ class SearcherViewSet(ModelViewSet):
             project = FundingProjects.objects.all()
             return success({
                 'project': [{
-                        'id': p.nftId,
-                        'startTime': p.startTime,
-                        'endTime': p.endTime,
-                        'token': p.token,
-                        'butPrice': p.buyPrice,
-                        'sellPrice': p.sellPrice,
-                        'gasPrice': p.gasPrice
-                    }
+                    'id': p.nftId,
+                    'startTime': p.startTime,
+                    'endTime': p.endTime,
+                    'token': p.token,
+                    'butPrice': p.buyPrice,
+                    'sellPrice': p.sellPrice,
+                    'gasPrice': p.gasPrice
+                }
                     for p in project
                 ]
             })
+
+    @action(detail=False)
+    def nft(self, request):
+        data = request.query_params
+
+        nftid = data.get('nftid')

@@ -21,26 +21,21 @@ from django.conf.urls import url
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
-from mywallet.views import WalletAddressViewSet,TransferLogsViewSet
+from mywallet.views import WalletAddressViewSet, TransferLogsViewSet
 from mynotice.views import NoticeViewSet
-from myfundingprojects.views import FundingProjectsViewSet,UserFundingSharesViewSet,FundingProjectsViewSetAdmin
+from myfundingprojects.views import FundingProjectsViewSet, UserFundingSharesViewSet, FundingProjectsViewSetAdmin
 from mylikelists.views import UserLikeListsViewSet
-
 
 router = DefaultRouter()
 
 router.register('search', SearcherViewSet)
-router.register('wallet',WalletAddressViewSet)
-router.register('transferlog',TransferLogsViewSet)
-router.register('notice',NoticeViewSet)
-router.register('userfundingprojects',FundingProjectsViewSet)
-router.register('fundingprojects',FundingProjectsViewSetAdmin)
-router.register('userlikefundingprojects',UserLikeListsViewSet)
-router.register('userfundingshares',UserFundingSharesViewSet)
-
-
-
-
+router.register('wallet', WalletAddressViewSet)
+router.register('transferlog', TransferLogsViewSet)
+router.register('notice', NoticeViewSet)
+router.register('userfundingprojects', FundingProjectsViewSet)
+router.register('fundingprojects', FundingProjectsViewSetAdmin)
+router.register('userfundingshares', UserFundingSharesViewSet)
+router.register('userlikefundingprojects', UserLikeListsViewSet)
 urlpatterns = [
     path('myapi/', include(router.urls)),
     path('', include(router.urls)),
@@ -48,5 +43,6 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
     url(r'^account/', include('allauth.urls')),
-    url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
+    url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email,
+        name='account_confirm_email'),
 ]

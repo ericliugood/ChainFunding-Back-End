@@ -1,24 +1,20 @@
 from rest_framework.serializers import ModelSerializer
-from mydatabase.models import FundingProjects,FundingShares
+from mydatabase.models import FundingProjects as Project, FundingShares as Share
 
 
 class FundingProjectsSerializer(ModelSerializer):
-    
     class Meta:
-        model=FundingProjects
-        fields = ['id','nftId','startTime','endTime','token','buyPrice','sellPrice','gasPrice']
+        model = Project
+        fields = ['id', 'nftId', 'startTime', 'endTime', 'token', 'buyPrice', 'sellPrice', 'gasPrice']
+
 
 class FundingProjectsSerializerAdmin(ModelSerializer):
-    
     class Meta:
-        model=FundingProjects
+        model = Project
         fields = '__all__'
 
 
-
-
 class UserFundingSharesSerializer(ModelSerializer):
-    
     class Meta:
-        model=FundingShares
-        fields = ['id','fundingProject','share']
+        model = Share
+        fields = ['id', 'fundingProject', 'share']
