@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # rest framework
     'rest_framework',
+    'drf_yasg',
     # rest auth
     'rest_auth',
     'rest_framework.authtoken',
@@ -185,7 +186,7 @@ REST_AUTH_SERIALIZERS = {
 
 # SMTP Configuration
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '*'  
+EMAIL_HOST = 'mail.gandi.net'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
 EMAIL_HOST_USER = '*' 

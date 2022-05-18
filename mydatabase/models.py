@@ -21,11 +21,14 @@ class UserDatas(AbstractBaseUser):
         help_text=("Designates whether the user can log into this admin site."),
     )
 
+    is_active = models.BooleanField(default=True)
+
     USERNAME_FIELD = 'usernameAccount'
     EMAIL_FIELD = 'emailAccount'
     REQUIRED_FIELD = []
 
     objects = CustomUserManager()
+
 
     class Meta:
         db_table = 'user_datas'
@@ -55,8 +58,8 @@ class TransferLogs(models.Model):
 
 class FundingProjects(models.Model):
     nftId = models.PositiveIntegerField()
-    nftContractAddress = nftName = models.CharField(max_length=255)
-    nftName = models.CharField(max_length=255)
+    nftContractAddress = models.CharField(max_length=255, blank=True)
+    nftName = models.CharField(max_length=255, blank=True)
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     token = models.CharField(max_length=18)
