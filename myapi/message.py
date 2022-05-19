@@ -10,6 +10,10 @@ class Msg:
             create = "創建集資錯誤"
             search = "查詢集資錯誤"
 
+        class Shares:
+            create = "新增份額錯誤"
+            search = "查詢份額錯誤"
+
     class NotFound:
         # user
         user = "查無此用戶"
@@ -21,3 +25,6 @@ class Msg:
         # funding
         project = "查無集資項目"
         personal_project = "用戶無集資項目"
+
+        # share
+        shares = "查無份額"
