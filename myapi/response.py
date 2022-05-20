@@ -7,5 +7,9 @@ def success(response={}):
     return Response(response, status=status.HTTP_200_OK)
 
 
+def err(message):
+    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
 def notfound(message):
     return Response(message, status=status.HTTP_404_NOT_FOUND)

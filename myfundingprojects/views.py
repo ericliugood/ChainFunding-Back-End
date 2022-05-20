@@ -1,64 +1,77 @@
 from mydatabase.models import UserDatas, FundingProjects, FundingShares
-from myfundingprojects.serializers import FundingProjectsSerializer, UserFundingSharesSerializer, \
-    FundingProjectsSerializerAdmin
-from rest_framework import viewsets, status
+from myfundingprojects.serializers import FundingProjectsSerializer, FundingSharesSerializer
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import action
+from myapi.response import *
+from myapi.message import *
 
 
 class FundingProjectsViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, ]
 
-    serializer_class = FundingProjectsSerializer
-    queryset = FundingProjects.objects.all()
+    # set serializer class
+    def get_serializer_class(self):
+        if self.action == 'create_funding':  # For project
+            return FundingProjectsSerializer
+        if self.action == 'add_shares':  # For shares
+            return FundingSharesSerializer
+        return FundingProjectsSerializer
 
+    # set queryset
     def get_queryset(self):  # added string
-        return super().get_queryset().filter(fundraiser=UserDatas.objects.get(id=self.request.user.id))
+        return FundingProjects.objects.filter(fundraiser=UserDatas.objects.get(id=self.request.user.id))
 
-    def create(self, request, *args, **kwargs):
-        fundingProjectsdata = request.data
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
+    def create_funding(self, request, *args, **kwargs):
+        data = request.data
 
         try:
-            new_fundingProjects = FundingProjects.objects.create(
+            new_funding = FundingProjects.objects.create(
                 fundraiser=UserDatas.objects.get(id=self.request.user.id),
-                nftId=fundingProjectsdata['nftId'],
-                startTime=fundingProjectsdata['startTime'],
-                endTime=fundingProjectsdata['endTime'],
-                token=fundingProjectsdata['token'],
-                buyPrice=fundingProjectsdata['buyPrice'],
-                sellPrice=fundingProjectsdata['sellPrice'],
-                gasPrice=fundingProjectsdata['gasPrice'])
-            new_fundingProjects.save()
-            return Response(status=status.HTTP_201_CREATED)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-class FundingProjectsViewSetAdmin(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
-
-    serializer_class = FundingProjectsSerializerAdmin
-    queryset = FundingProjects.objects.all()
-
-
-class UserFundingSharesViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, ]
-
-    serializer_class = UserFundingSharesSerializer
-    queryset = FundingShares.objects.all()
+                nftId=data['nftId'],
+                nftContractAddress=data['nftContractAddress'],
+                nftName=data['nftName'],
+                startTime=data['startTime'],
+                endTime=data['endTime'],
+                token=data['token'],
+                buyPrice=data['buyPrice'],
+                sellPrice=data['sellPrice'],
+                gasPrice=data['gasPrice'])
+            new_funding.save()
+            return success()
+        except Exception as e:
+            print(e)
+            return err(Msg.Err.FundingProject.create)
 
     def get_queryset(self):  # added string
-        return super().get_queryset().filter(userData=UserDatas.objects.get(id=self.request.user.id))
+        return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
 
-    def create(self, request, *args, **kwargs):
-        userFundingSharesdata = request.data
-
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
+    def add_shares(self, request, *args, **kwargs):
+        data = request.data
+        projectid = data['fundingProject']
+        share = data['share']
         try:
-            new_userFundingShares = FundingShares.objects.create(
-                userData=UserDatas.objects.get(id=self.request.user.id),
-                fundingProject=FundingProjects.objects.get(id=userFundingSharesdata['fundingProject']),
-                share=userFundingSharesdata['share'])
-            new_userFundingShares.save()
-            return Response(status=status.HTTP_201_CREATED)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            new_shares = FundingShares.objects.create(
+                userData_id=UserDatas.objects.get(id=self.request.user.id).id,
+                fundingProject_id=projectid,
+                share=share
+            )
+            new_shares.save()
+            return success()
+        except Exception as e:
+            print(e)
+            return err(Msg.Err.Shares.create)
+
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def find_shares(self, request):
+        data = request.query_params
+
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def add_evaluation(self, request):
+        data = request.query_params
+
+    @action(detail=False, permission_classes=[IsAdminUser])
+    def admin(self, request):
+        data = request.query_params

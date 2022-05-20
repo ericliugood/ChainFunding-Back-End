@@ -25,49 +25,52 @@ from rest_auth.views import PasswordResetConfirmView
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet, TransferLogsViewSet
 from mynotice.views import NoticeViewSet
-from myfundingprojects.views import FundingProjectsViewSet, UserFundingSharesViewSet, FundingProjectsViewSetAdmin
+from myfundingprojects.views import FundingProjectsViewSet
+# from myfundingprojects.views import UserFundingSharesViewSet
+# from myfundingprojects.views import FundingProjectsViewSetAdmin
 from mylikelists.views import UserLikeListsViewSet
 
 from rest_framework import permissions
 
-
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-router = DefaultRouter()
-
-router.register('search', SearcherViewSet)
-router.register('wallet', WalletAddressViewSet)
-router.register('transferlog', TransferLogsViewSet)
-router.register('notice', NoticeViewSet)
-router.register('userfundingprojects', FundingProjectsViewSet)
-router.register('adminfundingprojects', FundingProjectsViewSetAdmin)
-router.register('userfundingshares', UserFundingSharesViewSet)
-router.register('userlikefundingprojects', UserLikeListsViewSet)
+router = DefaultRouter(trailing_slash=False)
+router.register('search', SearcherViewSet, 'search')
+router.register('wallet', WalletAddressViewSet, 'wallet')
+router.register('transferlog', TransferLogsViewSet, 'transferlog')
+router.register('notice', NoticeViewSet, 'notice')
+router.register('fundingprojects', FundingProjectsViewSet, 'fundingprojects')
+router.register('likelist', UserLikeListsViewSet, 'likelist')
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
+    # Root
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
+
+    # Auth
     path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),
-            name='password_reset_confirm'),
+         name='password_reset_confirm'),
     url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
     url(r'^account/', include('allauth.urls')),
     url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email,
         name='account_confirm_email'),
+
+    # Api view
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
