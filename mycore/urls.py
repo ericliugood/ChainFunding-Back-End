@@ -20,7 +20,7 @@ from allauth.account.views import confirm_email
 from django.conf.urls import url
 
 from rest_auth.views import PasswordResetConfirmView
-
+from rest_auth.registration.views import VerifyEmailView
 # mysearcher
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet, TransferLogsViewSet
@@ -56,14 +56,17 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+# /<str:uidb64>/<str:token>
 urlpatterns = [
     # Root
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
 
     # Auth
-    path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', PasswordResetConfirmView.as_view(),
+    path('rest-auth/password/reset/confirm', PasswordResetConfirmView.as_view(),
          name='password_reset_confirm'),
+    # path('rest-auth/registration/verify-email/(?P<key>.+)/$', VerifyEmailView.as_view(),
+    #      name='account_confirm_email'),
     url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
     url(r'^account/', include('allauth.urls')),
