@@ -87,9 +87,18 @@ class FundingShares(models.Model):
     userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
     fundingProject = models.ForeignKey(FundingProjects, on_delete=models.PROTECT)
     share = models.DecimalField(max_digits=36, decimal_places=18)
+    sold = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'funding_shares'
+
+class SoldPrices(models.Model):
+    fundingShares = models.ForeignKey(FundingShares, on_delete=models.PROTECT)
+    price = models.DecimalField(max_digits=128, decimal_places=18)
+
+    class Meta:
+        db_table = 'sold_prices'
+
 
 
 class Notice(models.Model):
