@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from mydatabase.models import FundingProjects as Project, FundingShares as Share
+from mydatabase.models import FundingProjects as Project, FundingShares as Share ,SoldPrices
 
 
 class FundingProjectsSerializer(ModelSerializer):
@@ -14,7 +14,7 @@ class FundingSharesSerializer(ModelSerializer):
         model = Share
         fields = ['fundingProject', 'share']
 
-# class FundingProjectsSerializerAdmin(ModelSerializer):
-#     class Meta:
-#         model = Project
-#         fields = '__all__'
+class SoldPricesSerializer(ModelSerializer):
+    class Meta:
+        model = SoldPrices
+        fields = ['fundingShares', 'price']
