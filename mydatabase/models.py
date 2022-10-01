@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser
 )
+from pytz import timezone
 from myaccount.views import CustomUserManager
 
 
@@ -70,6 +71,8 @@ class FundingProjects(models.Model):
     fundraiser = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
     userLikeList = models.ManyToManyField(UserDatas, through='LikeLists', related_name='userLike')
     userFundingShare = models.ManyToManyField(UserDatas, through='FundingShares', related_name='userFunding')
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'funding_projects'
@@ -87,6 +90,8 @@ class FundingShares(models.Model):
     userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
     fundingProject = models.ForeignKey(FundingProjects, on_delete=models.PROTECT)
     share = models.DecimalField(max_digits=36, decimal_places=18)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'funding_shares'
