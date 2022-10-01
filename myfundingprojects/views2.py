@@ -14,18 +14,20 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         if self.action == 'list':
             return FundingProjects.objects.all()
         elif self.action == 'update':
-            return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
+            return FundingProjects.objects.filter(fundraiser=UserDatas.objects.get(id=self.request.user.id))
         elif self.action == 'retrieve':
             return FundingProjects.objects.all()
         elif self.action == 'create':
-            return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
+            return FundingProjects.objects.filter(fundraiser=UserDatas.objects.get(id=self.request.user.id))
         elif self.action == 'like' and self.request.method == 'POST':
-            return LikeLists.objects.filter(likeLists__userData_id=UserDatas.objects.get(id=self.request.user.id))
+            return LikeLists.objects.filter(userData=UserDatas.objects.get(id=self.request.user.id))
         elif self.action == 'like' and self.request.method == 'GET':
-            return LikeLists.objects.filter(likeLists__userData_id=UserDatas.objects.get(id=self.request.user.id))
+            return LikeLists.objects.filter(userData=UserDatas.objects.get(id=self.request.user.id))
         elif self.action == 'like' and self.request.method == 'DELETE':
-            return LikeLists.objects.filter(likeLists__userData_id=UserDatas.objects.get(id=self.request.user.id))
+            return LikeLists.objects.filter(userData=UserDatas.objects.get(id=self.request.user.id))
 
+
+# return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
     def get_serializer_class(self):
         if self.action == 'create':
             return FundingProjectsSerializer
@@ -132,6 +134,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
             except Exception as e:
                 print(e)
                 return err(Msg.Err.FundingProject.create)
+
                        
 
 
