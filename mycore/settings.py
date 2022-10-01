@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'mywallet',
     'mynotice',
     'myfundingprojects',
-    'mylikelists',
 ]
 
 MIDDLEWARE = [
