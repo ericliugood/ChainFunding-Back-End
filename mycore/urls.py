@@ -25,10 +25,9 @@ from rest_auth.registration.views import VerifyEmailView
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet, TransferLogsViewSet
 from mynotice.views import NoticeViewSet
-from myfundingprojects.views import FundingProjectsViewSet
+from myfundingprojects.views2 import FundingProjectsViewSet2
 # from myfundingprojects.views import UserFundingSharesViewSet
 # from myfundingprojects.views import FundingProjectsViewSetAdmin
-from mylikelists.views import UserLikeListsViewSet
 
 from rest_framework import permissions
 
@@ -40,8 +39,7 @@ router.register('search', SearcherViewSet, 'search')
 router.register('wallet', WalletAddressViewSet, 'wallet')
 router.register('transferlog', TransferLogsViewSet, 'transferlog')
 router.register('notice', NoticeViewSet, 'notice')
-router.register('fundingprojects', FundingProjectsViewSet, 'fundingprojects')
-router.register('likelist', UserLikeListsViewSet, 'likelist')
+router.register('fundingprojects', FundingProjectsViewSet2, 'fundingprojects')
 
 schema_view = get_schema_view(
     openapi.Info(
