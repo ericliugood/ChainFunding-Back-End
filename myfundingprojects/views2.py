@@ -1,4 +1,3 @@
-from itsdangerous import Serializer
 from mydatabase.models import UserDatas, FundingProjects, FundingShares , SoldPrices ,LikeLists
 from myfundingprojects.serializers import FundingProjectsSerializer,FundingProjectsSerializer2, FundingSharesSerializer , SoldPricesSerializer ,UserLikeListsSerializer
 from rest_framework import viewsets
