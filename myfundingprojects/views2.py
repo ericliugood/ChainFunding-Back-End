@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 from myapi.response import *
 from myapi.message import *
+import datetime
+import pytz
 
 class FundingProjectsViewSet2(viewsets.ModelViewSet):
 
@@ -81,6 +83,14 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         data = request.query_params
         try:
             update_funding = FundingProjects.objects.get(id=pk)
+            
+            tzUTC = pytz.utc
+            dt1 = update_funding.create_time
+            dtnow = datetime.datetime.now(tzUTC)
+            dt = dtnow-dt1
+            dtdays=dt.days
+            if dtdays >= 2:
+                return err(Msg.Err.FundingProject.create)
             if data.get('endTime') is not None:
                 update_funding.endTime = data.get('endTime')
             if data.get('buyPrice') is not None:
