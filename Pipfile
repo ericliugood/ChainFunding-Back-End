@@ -9,6 +9,8 @@ psycopg2 = "*"
 djangorestframework = "*"
 django-allauth = "*"
 django-rest-auth = "*"
+drf-nested-routers = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
