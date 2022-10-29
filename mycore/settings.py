@@ -97,27 +97,27 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-#         'NAME': 'a1',  # database name
-#         'USER': 'cfuser',  # username
-#         'PASSWORD': 'ab12374453',  # passwd
-#         'HOST': 'localhost',  # host
-#         'PORT': '9696',  # port
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-        'NAME': 'chainfunding',  # database name
+        'NAME': 'a3',  # database name
         'USER': 'cfuser',  # username
         'PASSWORD': 'ab12374453',  # passwd
         'HOST': 'localhost',  # host
-        'PORT': '5432',  # port
+        'PORT': '9696',  # port
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',  # postgresql
+#         'NAME': 'chainfunding',  # database name
+#         'USER': 'cfuser',  # username
+#         'PASSWORD': 'ab12374453',  # passwd
+#         'HOST': 'localhost',  # host
+#         'PORT': '5432',  # port
+#     }
+# }
 
 
 # Password validation
@@ -192,9 +192,9 @@ REST_AUTH_SERIALIZERS = {
 EMAIL_HOST = 'mail.gandi.net'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-EMAIL_HOST_USER = '*' 
-EMAIL_HOST_PASSWORD = '*'  
-DEFAULT_FROM_EMAIL = '*'
+EMAIL_HOST_USER = 'llw@llw.tw' 
+EMAIL_HOST_PASSWORD = 'ss1234ss'  
+DEFAULT_FROM_EMAIL = 'llw@llw.tw'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
