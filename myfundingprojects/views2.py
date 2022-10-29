@@ -74,7 +74,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 gasPrice=data['gasPrice'])
             new_funding.save()
             serializer_new_funding = FundingProjectsSerializer(new_funding)
-            return Response(serializer_new_funding.data,status=status.HTTP_200_OK)
+            return Response(serializer_new_funding.data,status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
             return err(Msg.Err.FundingProject.create)
@@ -83,7 +83,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         data = request.query_params
         try:
             update_funding = FundingProjects.objects.get(id=pk)
-            
+
             tzUTC = pytz.utc
             dt1 = update_funding.create_time
             dtnow = datetime.datetime.now(tzUTC)
@@ -91,6 +91,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
             dtdays=dt.days
             if dtdays >= 2:
                 return err(Msg.Err.FundingProject.create)
+
             if data.get('endTime') is not None:
                 update_funding.endTime = data.get('endTime')
             if data.get('buyPrice') is not None:
@@ -105,8 +106,19 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
             print(e)
             return err(Msg.Err.FundingProject.create)
 
-    def destroy(self, request):
-        pass
+    def destroy(self, request, pk=None):
+        update_funding = FundingProjects.objects.get(id=pk)
+
+        tzUTC = pytz.utc
+        dt1 = update_funding.create_time
+        dtnow = datetime.datetime.now(tzUTC)
+        dt = dtnow-dt1
+        dtdays=dt.days
+        if dtdays >= 2:
+            return err(Msg.Err.FundingProject.create)
+        update_funding.delete()
+
+        return Response(status=status.HTTP_200_OK)
                         
 
     def partial_update(self, request):

@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'mywallet',
     'mynotice',
     'myfundingprojects',
+    'myfundingprojectsshares',
 ]
 
 MIDDLEWARE = [
@@ -202,5 +203,39 @@ REST_FRAMEWORK = {
     ]
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOW_CREDENTIALS=True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
