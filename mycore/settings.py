@@ -93,14 +93,15 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-        'NAME': 'a5',  # database name
+        'NAME': 'chainfunding',  # database name
         'USER': 'cfuser',  # username
         'PASSWORD': 'ab12374453',  # passwd
         'HOST': 'localhost',  # host
-        'PORT': '9696',  # port
+        'PORT': '5432',  # port
     }
 }
 
