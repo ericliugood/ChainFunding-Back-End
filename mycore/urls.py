@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from django.conf.urls import url
+from myauthlogout.views import LogoutView
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
@@ -49,12 +50,13 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-# /<str:uidb64>/<str:token>
+
 urlpatterns = [
     # Root
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
+    path('auth/jwt/logout/',  LogoutView.as_view(), name='auth_logout'),
     path('auth/', include('djoser.urls.jwt')),
 
     # Api view
