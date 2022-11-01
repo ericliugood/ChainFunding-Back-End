@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ccz769%!j268(l^2*maa8-493crn$m1s$-jn9@62iw@ao8l*u3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
@@ -94,15 +94,15 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # postgresql
-        'NAME': 'a5',  # database name
-        'USER': 'cfuser',  # username
-        'PASSWORD': 'ab12374453',  # passwd
-        'HOST': 'localhost',  # host
-        'PORT': '9696',  # port
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql',  # postgresql
+         'NAME': 'chainfunding3',  # database name
+         'USER': 'cfuser',  # username
+         'PASSWORD': 'ab12374453',  # passwd
+         'HOST': 'localhost',  # host
+         'PORT': '5432',  # port
+     }
+ }
 
 
 # Password validation
@@ -141,7 +141,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/api/v1/static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
