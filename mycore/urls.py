@@ -16,18 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from allauth.account.views import confirm_email
 from django.conf.urls import url
 
-from rest_auth.views import PasswordResetConfirmView
-from rest_auth.registration.views import VerifyEmailView
 # mysearcher
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet, TransferLogsViewSet
 from mynotice.views import NoticeViewSet
 from myfundingprojects.views2 import FundingProjectsViewSet2
-# from myfundingprojects.views import UserFundingSharesViewSet
-# from myfundingprojects.views import FundingProjectsViewSetAdmin
 
 from rest_framework import permissions
 
@@ -59,17 +54,6 @@ urlpatterns = [
     # Root
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-
-    # Auth
-    path('rest-auth/password/reset/confirm', PasswordResetConfirmView.as_view(),
-         name='password_reset_confirm'),
-    # path('rest-auth/registration/verify-email/(?P<key>.+)/$', VerifyEmailView.as_view(),
-    #      name='account_confirm_email'),
-    url(r'^rest-auth/', include('rest_auth.urls')),  # rest auth url
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),  # register url
-    url(r'^account/', include('allauth.urls')),
-    url(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email,
-        name='account_confirm_email'),
 
     # Api view
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

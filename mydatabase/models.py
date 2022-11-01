@@ -7,10 +7,7 @@ from myaccount.views import CustomUserManager
 
 
 class UserDatas(AbstractBaseUser):
-    usernameAccount = models.CharField(
-        max_length=128,
-        unique=True
-    )
+    
     emailAccount = models.EmailField(
         max_length=128,
         unique=True
@@ -24,8 +21,7 @@ class UserDatas(AbstractBaseUser):
 
     is_active = models.BooleanField(default=True)
 
-    USERNAME_FIELD = 'usernameAccount'
-    EMAIL_FIELD = 'emailAccount'
+    USERNAME_FIELD = 'emailAccount'
     REQUIRED_FIELD = []
 
     objects = CustomUserManager()

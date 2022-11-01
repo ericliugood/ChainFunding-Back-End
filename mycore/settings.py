@@ -42,14 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     # rest auth
-    'rest_auth',
     'rest_framework.authtoken',
     # allauth
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-    'corsheaders',
     # apps
     'myaccount',
     'mydatabase',
@@ -68,8 +63,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 
 ]
 
@@ -100,24 +94,13 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-        'NAME': 'a3',  # database name
+        'NAME': 'a5',  # database name
         'USER': 'cfuser',  # username
         'PASSWORD': 'ab12374453',  # passwd
         'HOST': 'localhost',  # host
         'PORT': '9696',  # port
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-#         'NAME': 'chainfunding',  # database name
-#         'USER': 'cfuser',  # username
-#         'PASSWORD': 'ab12374453',  # passwd
-#         'HOST': 'localhost',  # host
-#         'PORT': '5432',  # port
-#     }
-# }
 
 
 # Password validation
@@ -168,33 +151,10 @@ AUTH_USER_MODEL = 'mydatabase.UserDatas'
 # Set rest_auth, allauth
 
 AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend"
     )
 
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'usernameAccount'
-ACCOUNT_USER_MODEL_EMAIL_FIELD = 'emailAccount'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-OLD_PASSWORD_FIELD_ENABLED = True
-
 SITE_ID = 1
-
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'myaccount.serializers.AccountSerializer',
-}
-
-# SMTP Configuration
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.gandi.net'  
-EMAIL_PORT = 587  
-EMAIL_USE_TLS = True  
-EMAIL_HOST_USER = 'llw@llw.tw' 
-EMAIL_HOST_PASSWORD = 'ss1234ss'  
-DEFAULT_FROM_EMAIL = 'llw@llw.tw'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -203,39 +163,4 @@ REST_FRAMEWORK = {
     ]
 }
 
-CORS_ALLOW_ALL_ORIGINS=True
-CORS_ALLOW_CREDENTIALS=True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
-]
-
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
-
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
 
