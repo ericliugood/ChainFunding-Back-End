@@ -1,4 +1,5 @@
-from mydatabase.models import UserDatas, FundingProjects, FundingShares , SoldPrices ,LikeLists
+from mydatabase.models import  FundingProjects ,LikeLists
+from django.contrib.auth.models import User
 from myfundingprojects.serializers import FundingProjectsSerializer,FundingProjectsSerializer2, FundingSharesSerializer , SoldPricesSerializer ,UserLikeListsSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -15,17 +16,17 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         if self.action == 'list':
             return FundingProjects.objects.all()
         elif self.action == 'update':
-            return FundingProjects.objects.filter(fundraiser=UserDatas.objects.get(id=self.request.user.id))
+            return FundingProjects.objects.filter(fundraiser=User.objects.get(id=self.request.user.id))
         elif self.action == 'retrieve':
             return FundingProjects.objects.all()
         elif self.action == 'create':
-            return FundingProjects.objects.filter(fundraiser=UserDatas.objects.get(id=self.request.user.id))
+            return FundingProjects.objects.filter(fundraiser=User.objects.get(id=self.request.user.id))
         elif self.action == 'like' and self.request.method == 'POST':
-            return LikeLists.objects.filter(userData=UserDatas.objects.get(id=self.request.user.id))
+            return LikeLists.objects.filter(userData=User.objects.get(id=self.request.user.id))
         elif self.action == 'like' and self.request.method == 'GET':
-            return LikeLists.objects.filter(userData=UserDatas.objects.get(id=self.request.user.id))
+            return LikeLists.objects.filter(userData=User.objects.get(id=self.request.user.id))
         elif self.action == 'like' and self.request.method == 'DELETE':
-            return LikeLists.objects.filter(userData=UserDatas.objects.get(id=self.request.user.id))
+            return LikeLists.objects.filter(userData=User.objects.get(id=self.request.user.id))
 
 
 # return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
@@ -62,7 +63,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
 
         try:
             new_funding = FundingProjects.objects.create(
-                fundraiser=UserDatas.objects.get(id=self.request.user.id),
+                fundraiser=User.objects.get(id=self.request.user.id),
                 nftId=data['nftId'],
                 nftContractAddress=data['nftContractAddress'],
                 nftName=data['nftName'],
@@ -130,7 +131,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
     def like(self, request, pk=None):
         if request.method == 'POST':
             try:
-                new_like=LikeLists.objects.create(userData=UserDatas.objects.get(id=self.request.user.id),fundingProject=FundingProjects.objects.get(id=pk))
+                new_like=LikeLists.objects.create(userData=User.objects.get(id=self.request.user.id),fundingProject=FundingProjects.objects.get(id=pk))
                 new_like.save()
                 return Response({'like': 'true'},status=status.HTTP_200_OK)
 
@@ -139,7 +140,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 return err(Msg.Err.FundingProject.create)
         elif request.method == 'DELETE':
             try:
-                new_like=LikeLists.objects.get(userData=UserDatas.objects.get(id=self.request.user.id),fundingProject=FundingProjects.objects.get(id=pk))
+                new_like=LikeLists.objects.get(userData=User.objects.get(id=self.request.user.id),fundingProject=FundingProjects.objects.get(id=pk))
                 new_like.delete()
                 return Response({'like': 'false'},status=status.HTTP_200_OK)
 
@@ -148,7 +149,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 return err(Msg.Err.FundingProject.create)
         elif request.method == 'GET': 
             try:
-                new_like=LikeLists.objects.get(userData=UserDatas.objects.get(id=self.request.user.id),fundingProject=FundingProjects.objects.get(id=pk))
+                new_like=LikeLists.objects.get(userData=User.objects.get(id=self.request.user.id),fundingProject=FundingProjects.objects.get(id=pk))
                 new_like_serilizars = UserLikeListsSerializer(new_like)
                 return Response(new_like_serilizars,status=status.HTTP_200_OK)
 

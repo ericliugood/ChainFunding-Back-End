@@ -1,38 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser
-)
+from django.contrib.auth.models import User
 from pytz import timezone
-from myaccount.views import CustomUserManager
-
-
-class UserDatas(AbstractBaseUser):
-    
-    emailAccount = models.EmailField(
-        max_length=128,
-        unique=True
-    )
-
-    is_staff = models.BooleanField(
-        ("staff status"),
-        default=False,
-        help_text=("Designates whether the user can log into this admin site."),
-    )
-
-    is_active = models.BooleanField(default=True)
-
-    USERNAME_FIELD = 'emailAccount'
-    REQUIRED_FIELD = []
-
-    objects = CustomUserManager()
-
-
-    class Meta:
-        db_table = 'user_datas'
-
 
 class WalletAddress(models.Model):
-    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    userData = models.ForeignKey(User, on_delete=models.PROTECT)
     walletType = models.CharField(max_length=18)
     walletAddress = models.CharField(max_length=36)
 
@@ -41,7 +12,7 @@ class WalletAddress(models.Model):
 
 
 class TransferLogs(models.Model):
-    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    userData = models.ForeignKey(User, on_delete=models.PROTECT)
     fromAddress = models.CharField(max_length=36)
     toAddress = models.CharField(max_length=36)
     amount = models.DecimalField(max_digits=128, decimal_places=18)
@@ -64,9 +35,9 @@ class FundingProjects(models.Model):
     sellPrice = models.DecimalField(max_digits=128, decimal_places=18)
     gasPrice = models.DecimalField(max_digits=128, decimal_places=18)
     evaluation = models.PositiveIntegerField(null=True)
-    fundraiser = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
-    userLikeList = models.ManyToManyField(UserDatas, through='LikeLists', related_name='userLike')
-    userFundingShare = models.ManyToManyField(UserDatas, through='FundingShares', related_name='userFunding')
+    fundraiser = models.ForeignKey(User, on_delete=models.PROTECT)
+    userLikeList = models.ManyToManyField(User, through='LikeLists', related_name='userLike')
+    userFundingShare = models.ManyToManyField(User, through='FundingShares', related_name='userFunding')
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
 
@@ -75,7 +46,7 @@ class FundingProjects(models.Model):
 
 
 class LikeLists(models.Model):
-    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    userData = models.ForeignKey(User, on_delete=models.PROTECT)
     fundingProject = models.ForeignKey(FundingProjects, on_delete=models.PROTECT)
 
     class Meta:
@@ -83,7 +54,7 @@ class LikeLists(models.Model):
 
 
 class FundingShares(models.Model):
-    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    userData = models.ForeignKey(User, on_delete=models.PROTECT)
     fundingProject = models.ForeignKey(FundingProjects, on_delete=models.PROTECT)
     share = models.DecimalField(max_digits=36, decimal_places=18)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -103,7 +74,7 @@ class SoldPrices(models.Model):
 
 
 class Notice(models.Model):
-    userData = models.ForeignKey(UserDatas, on_delete=models.PROTECT)
+    userData = models.ForeignKey(User, on_delete=models.PROTECT)
     notice = models.TextField(null=True, blank=True)
     read = models.BooleanField(default=False)
 

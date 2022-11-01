@@ -1,4 +1,5 @@
-from mydatabase.models import Notice,UserDatas
+from mydatabase.models import Notice
+from django.contrib.auth.models import User
 from mynotice.serializers import NoticeSerializer
 from rest_framework import viewsets
 from rest_framework import status
@@ -12,13 +13,13 @@ class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.all()
 
     def get_queryset(self):                                            # added string
-        return super().get_queryset().filter(userData=UserDatas.objects.get(id=self.request.user.id))
+        return super().get_queryset().filter(userData=User.objects.get(id=self.request.user.id))
     def create(self, request, *args, **kwargs):
         noticedata=request.data
         
         try:
                 new_notice = Notice.objects.create(
-                userData=UserDatas.objects.get(id=self.request.user.id),
+                userData=User.objects.get(id=self.request.user.id),
                 notice=noticedata['notice'],
                 read=noticedata['read'])
                 new_notice.save()

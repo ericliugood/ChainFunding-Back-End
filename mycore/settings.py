@@ -41,12 +41,10 @@ INSTALLED_APPS = [
     # rest framework
     'rest_framework',
     'drf_yasg',
-    # rest auth
-    'rest_framework.authtoken',
-    # allauth
+    'djoser',
+    'rest_framework_simplejwt',
     'django.contrib.sites',
     # apps
-    'myaccount',
     'mydatabase',
     'myapi',
     'mysearcher',
@@ -146,8 +144,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'mydatabase.UserDatas'
-
 # Set rest_auth, allauth
 
 AUTHENTICATION_BACKENDS = (
@@ -158,8 +154,7 @@ SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 

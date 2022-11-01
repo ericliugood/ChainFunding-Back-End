@@ -1,4 +1,5 @@
-from mydatabase.models import WalletAddress, UserDatas, TransferLogs
+from mydatabase.models import WalletAddress, TransferLogs
+from django.contrib.auth.models import User
 from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer
 from rest_framework import viewsets
 from rest_framework import status
@@ -13,13 +14,13 @@ class WalletAddressViewSet(viewsets.ModelViewSet):
     queryset = WalletAddress.objects.all()
 
     def get_queryset(self):  # added string
-        return super().get_queryset().filter(userData=UserDatas.objects.get(id=self.request.user.id))
+        return super().get_queryset().filter(userData=User.objects.get(id=self.request.user.id))
 
     def create(self, request, *args, **kwargs):
         walletdata = request.data
 
         try:
-            new_wallet = WalletAddress.objects.create(userData=UserDatas.objects.get(id=self.request.user.id),
+            new_wallet = WalletAddress.objects.create(userData=User.objects.get(id=self.request.user.id),
                                                       walletType=walletdata['walletType'],
                                                       walletAddress=walletdata['walletAddress'])
             new_wallet.save()
@@ -35,13 +36,13 @@ class TransferLogsViewSet(viewsets.ModelViewSet):
     queryset = TransferLogs.objects.all()
 
     def get_queryset(self):  # added string
-        return super().get_queryset().filter(userData=UserDatas.objects.get(id=self.request.user.id))
+        return super().get_queryset().filter(userData=User.objects.get(id=self.request.user.id))
 
     def create(self, request, *args, **kwargs):
         transferLogsdata = request.data
 
         try:
-            new_transferLogs = TransferLogs.objects.create(userData=UserDatas.objects.get(id=self.request.user.id),
+            new_transferLogs = TransferLogs.objects.create(userData=User.objects.get(id=self.request.user.id),
                                                            fromAddress=transferLogsdata['fromAddress'],
                                                            toAddress=transferLogsdata['toAddress'],
                                                            amount=transferLogsdata['amount'],
