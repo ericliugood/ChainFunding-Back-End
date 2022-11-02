@@ -1,5 +1,6 @@
 from mysearcher.serializers import SearcherSerializer
-from mydatabase.models import FundingProjects, UserDatas
+from mydatabase.models import FundingProjects
+from django.contrib.auth.models import User
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
@@ -21,7 +22,7 @@ class SearcherViewSet(ModelViewSet):
 
         if fundraiser is not None:  # find project from raiser
             try:
-                fundraiser = UserDatas.objects.get(usernameAccount=fundraiser)  # find fundraiser
+                fundraiser = User.objects.get(usernameAccount=fundraiser)  # find fundraiser
                 raiser_project = FundingProjects.objects.filter(fundraiser_id=fundraiser.id)  # find project by raiser
                 return success({
                     'project': [{
