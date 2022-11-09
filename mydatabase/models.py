@@ -13,6 +13,15 @@ class WalletAddress(models.Model):
     class Meta:
         db_table = 'wallet_address'
 
+class Wallet(models.Model):
+    userData = models.ForeignKey(User, on_delete=models.PROTECT)
+    token = models.CharField(max_length=18)
+    amount = models.DecimalField(max_digits=128, decimal_places=18)
+
+
+    class Meta:
+        db_table = 'wallet'
+
 
 class TransferLogs(models.Model):
     fromAddress = models.CharField(max_length=36)
@@ -35,11 +44,8 @@ class FundingProjects(models.Model):
     endTime = models.DateTimeField()
     token = models.CharField(max_length=18)
     buyPrice = models.DecimalField(max_digits=128, decimal_places=18)
-    real_buyPrice = models.DecimalField(max_digits=128, decimal_places=18)
     sellPrice = models.DecimalField(max_digits=128, decimal_places=18)
-    real_sellPrice = models.DecimalField(max_digits=128, decimal_places=18)
     gasPrice = models.DecimalField(max_digits=128, decimal_places=18)
-    real_gasPrice = models.DecimalField(max_digits=128, decimal_places=18)
     evaluation = models.PositiveIntegerField(null=True)
     fundraiser = models.ForeignKey(User, on_delete=models.PROTECT)
     userLikeList = models.ManyToManyField(User, through='LikeLists', related_name='userLike')
@@ -48,6 +54,7 @@ class FundingProjects(models.Model):
     userFundingShareBid = models.ManyToManyField(User, through='SharesBid', related_name='userSharesBid')
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
+    status = models.PositiveIntegerField(null=False)
     enabled = models.BooleanField(default=True)
 
     class Meta:
@@ -69,7 +76,7 @@ class FundingShares(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(default=True)
-    hands = models.PositiveIntegerField()
+    hands = models.PositiveIntegerField(null=True)
     userSold = models.ForeignKey(User, on_delete=models.PROTECT, related_name='userSold')
 
     class Meta:
@@ -140,7 +147,6 @@ class TransferLogsUser(models.Model):
     amount = models.DecimalField(max_digits=128, decimal_places=18)
     token = models.CharField(max_length=18)
     time = models.DateTimeField(auto_now_add=True)
-    transferCheck = models.PositiveIntegerField()
     remark = models.CharField(max_length=36)
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
