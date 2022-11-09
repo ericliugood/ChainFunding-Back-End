@@ -97,11 +97,11 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-        'NAME': 'chainfunding',  # database name
+        'NAME': 'aac',  # database name
         'USER': 'cfuser',  # username
         'PASSWORD': 'ab12374453',  # passwd
         'HOST': 'localhost',  # host
-        'PORT': '5432',  # port
+        'PORT': '9696',  # port
     }
 }
 
@@ -152,6 +152,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Set rest_auth, allauth
 
 SITE_ID = 1
+
+# AUTH_USER_MODEL = 'mydatabase.UserData'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
