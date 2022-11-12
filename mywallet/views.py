@@ -14,18 +14,44 @@ class WalletAddressViewSet(viewsets.ModelViewSet):
     queryset = WalletAddress.objects.all()
 
     def get_queryset(self):  # added string
-        return super().get_queryset().filter(userData=User.objects.get(id=self.request.user.id))
+        return super().get_queryset().filter(userData=User.objects.get(id=self.request.user.id),enabled=True)
 
     def create(self, request, *args, **kwargs):
         walletdata = request.data
+
+        qe = WalletAddress.objects.filter(walletAddress=walletdata['walletAddress'],enabled=True)
+        if qe.exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
+
+        
+
 
         try:
             new_wallet = WalletAddress.objects.create(userData=User.objects.get(id=self.request.user.id),
                                                       walletAddress=walletdata['walletAddress'])
             new_wallet.save()
-            return Response(status=status.HTTP_201_CREATED)
+            sada = WalletAddressSerializer(instance=new_wallet)
+            return Response(sada.data,status=status.HTTP_201_CREATED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        pass
+
+    def partial_update(self, request, *args, **kwargs):
+        pass
+
+    def destroy(self, request, *args, **kwargs):
+        
+        # update_wallet = WalletAddress.objects.filter(id=self.get_serializer.instance.id)
+        # update_wallet.update(enabled=False)
+        obj_id = kwargs['pk']
+        update_wallet = WalletAddress.objects.filter(id=obj_id)
+        update_wallet.update(enabled=False)
+        
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TransferLogsViewSet(viewsets.ModelViewSet):
