@@ -1,3 +1,4 @@
+import datetime
 from mydatabase.models import WalletAddress, TransferLogs
 from django.contrib.auth.models import User
 from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer
@@ -47,7 +48,9 @@ class WalletAddressViewSet(viewsets.ModelViewSet):
         # update_wallet = WalletAddress.objects.filter(id=self.get_serializer.instance.id)
         # update_wallet.update(enabled=False)
         obj_id = kwargs['pk']
-        update_wallet = WalletAddress.objects.filter(id=obj_id)
+        update_wallet = WalletAddress.objects.filter(id=obj_id,userData=User.objects.get(id=self.request.user.id),enabled=True)
+        if not update_wallet.exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         update_wallet.update(enabled=False)
         
 
