@@ -1,4 +1,4 @@
-import datetime
+from django.utils.timezone import now
 from mydatabase.models import WalletAddress, TransferLogs
 from django.contrib.auth.models import User
 from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer
@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime
 
 
 class WalletAddressViewSet(viewsets.ModelViewSet):
@@ -51,7 +52,10 @@ class WalletAddressViewSet(viewsets.ModelViewSet):
         update_wallet = WalletAddress.objects.filter(id=obj_id,userData=User.objects.get(id=self.request.user.id),enabled=True)
         if not update_wallet.exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        update_wallet.update(enabled=False)
+        update_walletu = WalletAddress.objects.get(id=obj_id)
+        update_walletu.enabled = False
+        update_walletu.save()
+        #必須採用單筆更新，deletetime才會發揮作用
         
 
         return Response(status=status.HTTP_204_NO_CONTENT)
