@@ -27,4 +27,9 @@ class wfunction():
         update_wallet.amount = update_wallet.amount + amount
         update_wallet.save()
 
+    def walletCanUse(self,userId,token,amount):
+
+        if self.getWallet(userId,token)['amount'] < amount:
+            return True
+        return False
         
