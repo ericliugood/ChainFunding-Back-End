@@ -1,12 +1,14 @@
 from django.utils.timezone import now
-from mydatabase.models import WalletAddress, TransferLogs
+from mydatabase.models import WalletAddress, TransferLogs,Wallet
 from django.contrib.auth.models import User
-from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer
+from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer,WalletSerializer
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
+from mywallet.walletfunction import wfunction
+from rest_framework.decorators import action
 
 
 class WalletAddressViewSet(viewsets.ModelViewSet):
@@ -85,3 +87,27 @@ class TransferLogsViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_201_CREATED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class WalletViewSet(viewsets.ModelViewSet):
+
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = WalletSerializer
+
+
+
+    def get_queryset(self):  # added string
+        return Wallet.objects.get_queryset().filter(userData=User.objects.get(id=self.request.user.id))
+
+    @action(detail=False, methods=['GET'])
+    def weth(self, request):
+        return Response(wfunction().getWallet(userId=request.user.id,token="weth"),status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'])
+    def usdt(self, request):
+        return Response(wfunction().getWallet(userId=request.user.id,token="usdt"),status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'])
+    def usdc(self, request):
+        return Response(wfunction().getWallet(userId=request.user.id,token="usdc"),status=status.HTTP_200_OK)
