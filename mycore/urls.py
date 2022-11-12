@@ -32,7 +32,7 @@ from drf_yasg import openapi
 
 router = DefaultRouter(trailing_slash=False)
 router.register('search', SearcherViewSet, 'search')
-router.register('wallet', WalletAddressViewSet, 'wallet')
+router.register('walletaddress', WalletAddressViewSet, 'walletaddress')
 router.register('transferlog', TransferLogsViewSet, 'transferlog')
 router.register('notice', NoticeViewSet, 'notice')
 router.register('fundingprojects', FundingProjectsViewSet2, 'fundingprojects')

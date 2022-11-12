@@ -21,7 +21,6 @@ class WalletAddressViewSet(viewsets.ModelViewSet):
 
         try:
             new_wallet = WalletAddress.objects.create(userData=User.objects.get(id=self.request.user.id),
-                                                      walletType=walletdata['walletType'],
                                                       walletAddress=walletdata['walletAddress'])
             new_wallet.save()
             return Response(status=status.HTTP_201_CREATED)

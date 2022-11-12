@@ -6,7 +6,7 @@ class WalletAddressSerializer(ModelSerializer):
     
     class Meta:
         model=WalletAddress
-        fields = ['id','walletType','walletAddress']
+        fields = ['id','walletAddress']
 
 class TransferLogsSerializer(ModelSerializer):
 
