@@ -1,6 +1,6 @@
 from mydatabase.models import  FundingProjects ,LikeLists
 from django.contrib.auth.models import User
-from myfundingprojects.serializers import FundingProjectsSerializer,FundingProjectsSerializer2, FundingSharesSerializer , SoldPricesSerializer ,UserLikeListsSerializer
+from myfundingprojects.serializers import FundingProjectsSerializer2,FundingProjectsSerializer3 ,UserLikeListsSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -32,9 +32,9 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
 # return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
     def get_serializer_class(self):
         if self.action == 'create':
-            return FundingProjectsSerializer
-        elif self.action == 'update':
             return FundingProjectsSerializer2
+        elif self.action == 'update':
+            return FundingProjectsSerializer3
         elif self.action == 'retrieve':
             return FundingProjectsSerializer2
         elif self.action == 'like':
@@ -74,14 +74,20 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 sellPrice=data['sellPrice'],
                 gasPrice=data['gasPrice'])
             new_funding.save()
-            serializer_new_funding = FundingProjectsSerializer(new_funding)
+            serializer_new_funding = FundingProjectsSerializer2(new_funding)
             return Response(serializer_new_funding.data,status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
             return err(Msg.Err.FundingProject.create)
 
     def update(self, request, pk=None):
-        data = request.query_params
+        update_fundingf = FundingProjects.objects.filter(id=pk,fundraiser=User.objects.get(id=self.request.user.id))
+        if not update_fundingf.exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+        data = request.data
+        
         try:
             update_funding = FundingProjects.objects.get(id=pk)
 
@@ -93,21 +99,26 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
             if dtdays >= 2:
                 return err(Msg.Err.FundingProject.create)
 
-            if data.get('endTime') is not None:
-                update_funding.endTime = data.get('endTime')
-            if data.get('buyPrice') is not None:
-                update_funding.buyPrice = data.get('buyPrice')
-            if data.get('sellPrice') is not None:
-                update_funding.sellPrice = data.get('sellPrice')
+            if 'endTime' in data:
+                update_funding.endTime = data['endTime']
+            if 'buyPrice' in data:
+                update_funding.buyPrice = data['buyPrice']
+            if 'sellPrice' in data:
+                update_funding.sellPrice = data['sellPrice']
             
             update_funding.save()
-            serializer_new_funding = FundingProjectsSerializer(update_funding)
+            serializer_new_funding = FundingProjectsSerializer2(update_funding)
             return Response(serializer_new_funding.data,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return err(Msg.Err.FundingProject.create)
 
     def destroy(self, request, pk=None):
+        update_fundingf = FundingProjects.objects.filter(id=pk,fundraiser=User.objects.get(id=self.request.user.id))
+        if not update_fundingf.exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
         update_funding = FundingProjects.objects.get(id=pk)
 
         tzUTC = pytz.utc
@@ -117,9 +128,10 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         dtdays=dt.days
         if dtdays >= 2:
             return err(Msg.Err.FundingProject.create)
-        update_funding.delete()
+        update_funding.enabled=False
+        update_funding.save()
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
                         
 
     def partial_update(self, request):

@@ -15,7 +15,7 @@ class WalletAddress(models.Model):
 
 class Wallet(models.Model):
     userData = models.ForeignKey(User, on_delete=models.PROTECT)
-    token = models.CharField(max_length=18)
+    token = models.CharField(max_length=18,null=True)
     amount = models.DecimalField(max_digits=128, decimal_places=18)
 
 
@@ -28,9 +28,9 @@ class TransferLogs(models.Model):
     toAddress = models.CharField(max_length=36)
     amount = models.DecimalField(max_digits=128, decimal_places=18)
     token = models.CharField(max_length=18)
-    time = models.DateTimeField()
-    transferCheck = models.PositiveIntegerField()
-    remark = models.CharField(max_length=36)
+    time = models.DateTimeField(null=True)
+    transferCheck = models.PositiveIntegerField(null=True)
+    remark = models.CharField(max_length=36,null=True)
 
     class Meta:
         db_table = 'transfer_logs'
@@ -54,7 +54,7 @@ class FundingProjects(models.Model):
     userFundingShareBid = models.ManyToManyField(User, through='SharesBid', related_name='userSharesBid')
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
-    status = models.PositiveIntegerField(null=False)
+    status = models.PositiveIntegerField(null=True)
     enabled = models.BooleanField(default=True)
 
     class Meta:
@@ -77,7 +77,7 @@ class FundingShares(models.Model):
     update_time = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(default=True)
     hands = models.PositiveIntegerField(null=True)
-    userSold = models.ForeignKey(User, on_delete=models.PROTECT, related_name='userSold')
+    userSold = models.ForeignKey(User, on_delete=models.PROTECT, related_name='userSold',null=True)
 
     class Meta:
         db_table = 'funding_shares'
