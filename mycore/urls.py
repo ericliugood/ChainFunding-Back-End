@@ -21,7 +21,7 @@ from myauthlogout.views import LogoutView
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
-from mywallet.views import WalletAddressViewSet, TransferLogsViewSet
+from mywallet.views import WalletAddressViewSet, TransferLogsViewSet,WalletViewSet
 from mynotice.views import NoticeViewSet
 from myfundingprojects.views2 import FundingProjectsViewSet2
 
@@ -32,10 +32,12 @@ from drf_yasg import openapi
 
 router = DefaultRouter(trailing_slash=False)
 router.register('search', SearcherViewSet, 'search')
-router.register('wallet', WalletAddressViewSet, 'wallet')
+router.register('walletaddress', WalletAddressViewSet, 'walletaddress')
 router.register('transferlog', TransferLogsViewSet, 'transferlog')
 router.register('notice', NoticeViewSet, 'notice')
 router.register('fundingprojects', FundingProjectsViewSet2, 'fundingprojects')
+router.register('wallet', WalletViewSet, 'wallet')
+
 
 schema_view = get_schema_view(
     openapi.Info(
