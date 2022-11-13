@@ -6,13 +6,13 @@ class FundingProjectsSerializer(ModelSerializer):
     class Meta:
         model = Project
         fields = ['nftId', 'nftContractAddress', 'nftName', 'startTime', 'endTime', 'token', 'buyPrice',
-                  'sellPrice', 'gasPrice']
+                  'sellPrice', 'gasPrice','stopPrice','lowest_share']
 
 class FundingProjectsSerializer2(ModelSerializer):
     class Meta:
         model = Project
         fields = ['id','nftId', 'nftContractAddress', 'nftName', 'startTime', 'endTime', 'token', 'buyPrice',
-                  'sellPrice', 'gasPrice']
+                  'sellPrice', 'gasPrice','stopPrice','lowest_share']
 
 class FundingProjectsSerializer3(ModelSerializer):
     class Meta:

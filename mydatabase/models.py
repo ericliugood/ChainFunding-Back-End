@@ -46,6 +46,8 @@ class FundingProjects(models.Model):
     buyPrice = models.DecimalField(max_digits=128, decimal_places=18)
     sellPrice = models.DecimalField(max_digits=128, decimal_places=18)
     gasPrice = models.DecimalField(max_digits=128, decimal_places=18)
+    stopPrice = models.DecimalField(max_digits=128, decimal_places=18,null=True)
+    lowest_share = models.DecimalField(max_digits=36, decimal_places=18,null=True)
     evaluation = models.PositiveIntegerField(null=True)
     fundraiser = models.ForeignKey(User, on_delete=models.PROTECT)
     userLikeList = models.ManyToManyField(User, through='LikeLists', related_name='userLike')
