@@ -72,7 +72,9 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 token=data['token'],
                 buyPrice=data['buyPrice'],
                 sellPrice=data['sellPrice'],
-                gasPrice=data['gasPrice'])
+                gasPrice=data['gasPrice'],
+                stopPrice=data['stopPrice'],
+                lowest_share=data['lowest_share'])
             new_funding.save()
             serializer_new_funding = FundingProjectsSerializer2(new_funding)
             return Response(serializer_new_funding.data,status=status.HTTP_201_CREATED)
@@ -105,6 +107,11 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 update_funding.buyPrice = data['buyPrice']
             if 'sellPrice' in data:
                 update_funding.sellPrice = data['sellPrice']
+            if 'lowest_share' in data:
+                update_funding.lowest_share = data['lowest_share']
+            if 'stopPrice' in data:
+                update_funding.stopPrice = data['stopPrice']
+            
             
             update_funding.save()
             serializer_new_funding = FundingProjectsSerializer2(update_funding)
