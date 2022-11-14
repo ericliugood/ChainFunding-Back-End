@@ -22,3 +22,18 @@ class wfunction():
     def walletChange(self,userId,token,amount):
         if not Wallet.objects.filter(userData=User.objects.get(id=userId),token=token).exists():
             self.addWallet(userId,token)
+
+        update_wallet = Wallet.objects.get(userData=User.objects.get(id=userId),token=token) 
+        update_wallet.amount = update_wallet.amount + amount
+        update_wallet.save()
+
+    def walletCanUse(self,userId,token,amount):
+        
+        if not Wallet.objects.filter(userData=User.objects.get(id=userId),token=token).exists():
+            self.addWallet(userId,token)
+        wallets = Wallet.objects.get(userData=User.objects.get(id=userId),token=token)
+
+        if wallets.amount > amount:
+            return True
+        return False
+        
