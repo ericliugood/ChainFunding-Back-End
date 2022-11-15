@@ -11,8 +11,11 @@ class Msg:
             search = "查詢集資錯誤"
 
         class Shares:
-            create = "新增份額錯誤"
+            create_money_not_enough = {'error': 'money is not enough'}
+            delete_share_not_enough = {'error': 'day is higher than 2 days'}
+            not_found_shares = {'error': 'not found shares'}
             search = "查詢份額錯誤"
+
 
     class NotFound:
         # user
@@ -28,3 +31,6 @@ class Msg:
 
         # share
         shares = "查無份額"
+
+    class Sucess:
+        delete_sucess = {'msg': 'delete sucess'}

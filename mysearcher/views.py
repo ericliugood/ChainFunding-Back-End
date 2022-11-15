@@ -1,5 +1,6 @@
 from mysearcher.serializers import SearcherSerializer
-from mydatabase.models import FundingProjects, UserDatas
+from mydatabase.models import FundingProjects
+from django.contrib.auth.models import User
 
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist

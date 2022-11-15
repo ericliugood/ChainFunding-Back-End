@@ -1,12 +1,18 @@
 from rest_framework.serializers import ModelSerializer
-from mydatabase.models import WalletAddress,TransferLogs
+from mydatabase.models import WalletAddress,TransferLogs,Wallet
 
 
 class WalletAddressSerializer(ModelSerializer):
     
     class Meta:
         model=WalletAddress
-        fields = ['id','walletType','walletAddress']
+        fields = ['id','walletAddress']
+
+class WalletSerializer(ModelSerializer):
+    
+    class Meta:
+        model=Wallet
+        fields = ['token','amount']
 
 class TransferLogsSerializer(ModelSerializer):
 
