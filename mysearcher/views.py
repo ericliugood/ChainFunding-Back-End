@@ -2,6 +2,7 @@ from mysearcher.serializers import SearcherSerializer
 from mydatabase.models import FundingProjects
 from django.contrib.auth.models import User
 
+import requests
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.viewsets import ModelViewSet
@@ -23,7 +24,7 @@ class SearcherViewSet(ModelViewSet):
         if parm is not None:  # find project from raiser
             try:
                 try:
-                    fundraiser = UserDatas.objects.get(usernameAccount__contains=parm)  # find fundraiser
+                    fundraiser = User.objects.get(username__contains=parm)  # find fundraiser
 
                     raiser_project = FundingProjects.objects.filter(
                         Q(fundraiser_id=fundraiser.id) | Q(nftName__contains=parm) | Q(nftContractAddress__contains=parm)
@@ -44,7 +45,7 @@ class SearcherViewSet(ModelViewSet):
                         'butPrice': p.buyPrice,
                         'sellPrice': p.sellPrice,
                         'gasPrice': p.gasPrice,
-                        'fundraiser': UserDatas.objects.filter(id=p.fundraiser_id).values('usernameAccount')
+                        'fundraiser': User.objects.filter(id=p.fundraiser_id).values('username')
                     }
                         for p in raiser_project
                     ]
@@ -54,46 +55,28 @@ class SearcherViewSet(ModelViewSet):
                 return notfound(Msg.NotFound.project)
         else:
             return err(Msg.Err.FundingProject.search)
-        # elif nftid is not None:  # find project from nftid
-        #     try:
-        #         nft_project = FundingProjects.objects.filter(nftId=nftid)  # find project by nft id
-        #         return success({
-        #             'project': [{
-        #                 'nftid': p.nftId,
-        #                 'startTime': p.startTime,
-        #                 'endTime': p.endTime,
-        #                 'token': p.token,
-        #                 'butPrice': p.buyPrice,
-        #                 'sellPrice': p.sellPrice,
-        #                 'gasPrice': p.gasPrice
-        #             }
-        #                 for p in nft_project
-        #             ]
-        #         })
-        #     except Exception as e:
-        #         print(e)
-        #         return notfound(Msg.NotFound.project)
-        # else:  # list all project
-        #     try:
-        #         project = FundingProjects.objects.all()
-        #         return success({
-        #             'project': [{
-        #                 'nftid': p.nftId,
-        #                 'startTime': p.startTime,
-        #                 'endTime': p.endTime,
-        #                 'token': p.token,
-        #                 'butPrice': p.buyPrice,
-        #                 'sellPrice': p.sellPrice,
-        #                 'gasPrice': p.gasPrice
-        #             }
-        #                 for p in project
-        #             ]
-        #         })
-        #     except Exception as e:
-        #         print(e)
-        #         return notfound(Msg.NotFound.project)
 
     @action(detail=False)
     def opensea(self, request):
         data = request.query_params
-        nftid = data.get('nftid')
+        ca = data.get('address')
+        response = {}
+
+        if ca is not None:
+            if len(ca) == 42:
+
+
+                #taddr = "0x3ad7ad283dab53511abdc5ff9f95a35f735e48f2"
+                # url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address="+taddr+"&order_direction=desc&offset=0&limit=50&include_orders=false"
+
+                url = "https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=" + ca \
+                      + "&order_direction=desc&offset=0&limit=5&include_orders=false"
+
+                content = requests.get(url)
+
+                return success({"OpenSea": content})
+
+            else:
+                return err(Msg.Err.OpenSea.search)
+        else:
+            return err(Msg.Err.OpenSea.address)
