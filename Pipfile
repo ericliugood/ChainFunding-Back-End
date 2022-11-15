@@ -11,6 +11,8 @@ django-allauth = "*"
 django-rest-auth = "*"
 drf-nested-routers = "*"
 django-cors-headers = "*"
+requests = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
