@@ -97,14 +97,14 @@ WSGI_APPLICATION = 'mycore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # postgresql
-        'NAME': 'b2',  # database name
+        'NAME': 'db2',  # database name
         'USER': 'cfuser',  # username
         'PASSWORD': 'ab12374453',  # passwd
         'HOST': 'localhost',  # host
-        'PORT': '9696',  # port
+        #'PORT': '9696',  # port
+        'PORT': '5432',  # port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

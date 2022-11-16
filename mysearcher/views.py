@@ -2,6 +2,9 @@ from mysearcher.serializers import SearcherSerializer
 from mydatabase.models import FundingProjects
 from django.contrib.auth.models import User
 
+import requests
+from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 
@@ -16,14 +19,21 @@ class SearcherViewSet(ModelViewSet):
     @action(detail=False)
     def project(self, request):  # project nft user
         data = request.query_params
+        parm = data.get('parm')
 
-        nftid = data.get('nftid')
-        fundraiser = data.get('fundraiser')
-
-        if fundraiser is not None:  # find project from raiser
+        if parm is not None:  # find project from raiser
             try:
-                fundraiser = User.objects.get(usernameAccount=fundraiser)  # find fundraiser
-                raiser_project = FundingProjects.objects.filter(fundraiser_id=fundraiser.id)  # find project by raiser
+                try:
+                    fundraiser = User.objects.get(username__contains=parm)  # find fundraiser
+
+                    raiser_project = FundingProjects.objects.filter(
+                        Q(fundraiser_id=fundraiser.id) | Q(nftName__contains=parm) | Q(nftContractAddress__contains=parm)
+                    )  # find project by raiser, nftname, nftid, nftaddr
+                except ObjectDoesNotExist:
+                    raiser_project = FundingProjects.objects.filter(
+                        Q(nftName__contains=parm) | Q(nftContractAddress__contains=parm)
+                    )  # find project by nftname, nftid, nftaddr
+
                 return success({
                     'project': [{
                         'nftId': p.nftId,
@@ -35,7 +45,7 @@ class SearcherViewSet(ModelViewSet):
                         'butPrice': p.buyPrice,
                         'sellPrice': p.sellPrice,
                         'gasPrice': p.gasPrice,
-                        'fundraiser': fundraiser.usernameAccount
+                        'fundraiser': User.objects.filter(id=p.fundraiser_id).values('username')
                     }
                         for p in raiser_project
                     ]
@@ -43,46 +53,30 @@ class SearcherViewSet(ModelViewSet):
             except Exception as e:
                 print(e)
                 return notfound(Msg.NotFound.project)
-        elif nftid is not None:  # find project from nftid
-            try:
-                nft_project = FundingProjects.objects.filter(nftId=nftid)  # find project by nft id
-                return success({
-                    'project': [{
-                        'nftid': p.nftId,
-                        'startTime': p.startTime,
-                        'endTime': p.endTime,
-                        'token': p.token,
-                        'butPrice': p.buyPrice,
-                        'sellPrice': p.sellPrice,
-                        'gasPrice': p.gasPrice
-                    }
-                        for p in nft_project
-                    ]
-                })
-            except Exception as e:
-                print(e)
-                return notfound(Msg.NotFound.project)
-        else:  # list all project
-            try:
-                project = FundingProjects.objects.all()
-                return success({
-                    'project': [{
-                        'nftid': p.nftId,
-                        'startTime': p.startTime,
-                        'endTime': p.endTime,
-                        'token': p.token,
-                        'butPrice': p.buyPrice,
-                        'sellPrice': p.sellPrice,
-                        'gasPrice': p.gasPrice
-                    }
-                        for p in project
-                    ]
-                })
-            except Exception as e:
-                print(e)
-                return notfound(Msg.NotFound.project)
+        else:
+            return err(Msg.Err.FundingProject.search)
 
     @action(detail=False)
-    def nft(self, request):
+    def opensea(self, request):
         data = request.query_params
-        nftid = data.get('nftid')
+        ca = data.get('address')
+        response = {}
+
+        if ca is not None:
+            if len(ca) == 42:
+
+
+                #taddr = "0x3ad7ad283dab53511abdc5ff9f95a35f735e48f2"
+                # url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address="+taddr+"&order_direction=desc&offset=0&limit=50&include_orders=false"
+
+                url = "https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=" + ca \
+                      + "&order_direction=desc&offset=0&limit=5&include_orders=false"
+
+                content = requests.get(url)
+
+                return success({"OpenSea": content})
+
+            else:
+                return err(Msg.Err.OpenSea.search)
+        else:
+            return err(Msg.Err.OpenSea.address)
