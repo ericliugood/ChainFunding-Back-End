@@ -1,4 +1,4 @@
-from mydatabase.models import  FundingProjects ,LikeLists
+from mydatabase.models import  FundingProjects ,LikeLists,FundingShares,Wallet
 from django.contrib.auth.models import User
 from myfundingprojects.serializers import FundingProjectsSerializer2,FundingProjectsSerializer3 ,UserLikeListsSerializer
 from rest_framework import viewsets
@@ -9,6 +9,8 @@ from myapi.response import *
 from myapi.message import *
 import datetime
 import pytz
+from mywallet.walletfunction import wfunction
+
 
 class FundingProjectsViewSet2(viewsets.ModelViewSet):
 
@@ -126,7 +128,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-        update_funding = FundingProjects.objects.get(id=pk)
+        update_funding = update_fundingf[0]
 
         tzUTC = pytz.utc
         dt1 = update_funding.create_time
@@ -136,7 +138,23 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         if dtdays >= 2:
             return err(Msg.Err.FundingProject.create)
         update_funding.enabled=False
+        
+        # userFundingShare=FundingShares.objects.filter(fundingProject=update_funding,enabled=True,hands=1)
+        # userData = User.objects.filter(userFunding=update_funding)
+        # fsplus = userFundingShare.filter(userData=userData)
+        # fshare = FundingShares.objects.filter(userData__in=userData,hands=1,enabled=True,fundingProject=update_funding)
+
+        fshare = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=update_funding)
+
+        for e in fshare:
+            wfunction().walletChange(e.userData.pk,update_funding.token,e.share)
+
+
+        # Wallet.objects.filter(token=update_funding.token,userData=userData).update(amount=F('amount')+F('fshare__share'))
+        
+
         update_funding.save()
+
 
         return Response(status=status.HTTP_204_NO_CONTENT)
                         
