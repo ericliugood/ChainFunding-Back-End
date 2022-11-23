@@ -101,7 +101,7 @@ DATABASES = {
         'USER': 'cfuser',  # username
         'PASSWORD': 'ab12374453',  # passwd
         'HOST': 'localhost',  # host
-        #'PORT': '9696',  # port
+        # 'PORT': '9696',  # port
         'PORT': '5432',  # port
     }
 }

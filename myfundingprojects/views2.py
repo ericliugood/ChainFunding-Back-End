@@ -1,6 +1,6 @@
 from mydatabase.models import  FundingProjects ,LikeLists,FundingShares,Wallet
 from django.contrib.auth.models import User
-from myfundingprojects.serializers import FundingProjectsSerializer2,FundingProjectsSerializer3 ,UserLikeListsSerializer
+from myfundingprojects.serializers import FundingProjectsSerializer2,FundingProjectsSerializer3 ,FundingProjectsSerializer4,UserLikeListsSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -13,6 +13,17 @@ from mywallet.walletfunction import wfunction
 
 
 class FundingProjectsViewSet2(viewsets.ModelViewSet):
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return FundingProjectsSerializer2
+        elif self.action == 'update':
+            return FundingProjectsSerializer3
+        elif self.action == 'retrieve':
+            return FundingProjectsSerializer4
+        elif self.action == 'like':
+            return UserLikeListsSerializer
+        return FundingProjectsSerializer2
 
     def get_queryset(self):  # added string
         if self.action == 'list':
@@ -32,16 +43,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
 
 
 # return FundingProjects.objects.filter(fundingshares__userData_id=UserDatas.objects.get(id=self.request.user.id))
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return FundingProjectsSerializer2
-        elif self.action == 'update':
-            return FundingProjectsSerializer3
-        elif self.action == 'retrieve':
-            return FundingProjectsSerializer2
-        elif self.action == 'like':
-            return UserLikeListsSerializer
-        return FundingProjectsSerializer2
+
 
     def get_permissions(self):
 
@@ -76,7 +78,8 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 sellPrice=data['sellPrice'],
                 gasPrice=data['gasPrice'],
                 stopPrice=data['stopPrice'],
-                lowest_share=data['lowest_share'])
+                lowest_share=data['lowest_share'],
+                status=1)
             new_funding.save()
             serializer_new_funding = FundingProjectsSerializer2(new_funding)
             return Response(serializer_new_funding.data,status=status.HTTP_201_CREATED)

@@ -97,6 +97,11 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
 
             
         
+# class FundingSharesSoldViewSet(viewsets.ModelViewSet):
+#     permission_classes = [IsAuthenticated]
+
+#     serializer_class = FundingSharesSerializer
+
 
 
 
