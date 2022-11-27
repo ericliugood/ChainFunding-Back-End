@@ -9,6 +9,9 @@ class wfunction():
     def addWallet(self,userId,token):
         Wallet.objects.create(userData=User.objects.get(id=userId),amount=0.0,token=token)
 
+    def addWalletud(self,userDatai,token):
+        Wallet.objects.create(userData=userDatai,amount=0.0,token=token)
+
 
     def getWallet(self,userId,token):
         if not Wallet.objects.filter(userData=User.objects.get(id=userId),token=token).exists():
@@ -24,6 +27,14 @@ class wfunction():
             self.addWallet(userId,token)
 
         update_wallet = Wallet.objects.get(userData=User.objects.get(id=userId),token=token) 
+        update_wallet.amount = update_wallet.amount + amount
+        update_wallet.save()
+    
+    def walletChangeud(self,userDatai,token,amount):
+        if not Wallet.objects.filter(userData=userDatai,token=token).exists():
+            self.addWalletud(userDatai,token)
+
+        update_wallet = Wallet.objects.get(userData=userDatai,token=token) 
         update_wallet.amount = update_wallet.amount + amount
         update_wallet.save()
 

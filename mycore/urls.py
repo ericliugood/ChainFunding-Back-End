@@ -24,7 +24,7 @@ from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet, TransferLogsViewSet,WalletViewSet
 from mynotice.views import NoticeViewSet
 from myfundingprojects.views2 import FundingProjectsViewSet2
-from myfundingprojectsshares.views import FundingSharesViewSet
+from myfundingprojectsshares.views import FundingSharesViewSet,FundingSharesSoldViewSet
 
 from rest_framework import permissions
 
@@ -38,6 +38,7 @@ router.register('transferlog', TransferLogsViewSet, 'transferlog')
 router.register('notice', NoticeViewSet, 'notice')
 router.register('fundingprojects', FundingProjectsViewSet2, 'fundingprojects')
 router.register('fundingshares', FundingSharesViewSet, 'fundingshares')
+router.register('fundingsharessold',FundingSharesSoldViewSet, 'fundingsharessold')
 router.register('wallet', WalletViewSet, 'wallet')
 
 
@@ -67,4 +68,7 @@ urlpatterns = [
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    #url(r'^search/<str:parm>', SearcherViewSet.project, 'searchproject'),
+
 ]
