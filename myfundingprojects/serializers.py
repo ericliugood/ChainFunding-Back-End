@@ -12,10 +12,11 @@ class FundingProjectsSerializer(ModelSerializer):
 class FundingProjectsSerializer4(ModelSerializer):
     shares_sum = SerializerMethodField()
     shares_sum_scale = SerializerMethodField()
+    fundraiser_name = SerializerMethodField()
     class Meta:
         model = Project
         fields = ['id','nftId', 'nftContractAddress', 'nftName', 'startTime', 'endTime', 'token', 'buyPrice',
-                  'sellPrice', 'gasPrice','stopPrice','lowest_share','shares_sum','shares_sum_scale']
+                  'sellPrice', 'gasPrice','stopPrice','lowest_share','shares_sum','shares_sum_scale','fundraiser_name']
     def get_shares_sum(self,obj):
         if obj.status == 1:
             a = Share.objects.filter(hands=1,enabled=True,fundingProject=obj).aggregate(share=Sum('share'))['share'] or 0
@@ -26,6 +27,9 @@ class FundingProjectsSerializer4(ModelSerializer):
             a = Share.objects.filter(hands=1,enabled=True,fundingProject=obj).aggregate(share=Sum('share'))['share'] or 0
             return a/obj.buyPrice
         return obj.buyPrice/obj.buyPrice
+    def get_fundraiser_name(self,obj):
+        return obj.fundraiser.username
+
 
         
 
