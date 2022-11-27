@@ -16,6 +16,7 @@ class Msg:
 
         class Shares:
             create_money_not_enough = {'error': 'money is not enough'}
+            shares_not_enabled = {'error': 'shares not enabled'}
             create_share_not_filter = {'error': '集資項目不符合條件或集資低於下限（最後一人要買剩下的）'}
             delete_share_not_enough = {'error': 'day is higher than 2 days'}
             not_found_shares = {'error': 'not found shares'}

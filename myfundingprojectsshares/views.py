@@ -26,12 +26,15 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             old_share=0
             fundingProjectId = sharesdata['fundingProject']
             share = sharesdata['share']
+            
             fundingProject= FundingProjects.objects.get(id=fundingProjectId)
+            if not (fundingProject.status == 1 and fundingProject.enabled == True):
+                return Response(Msg.Err.Shares.shares_not_enabled,status=status.HTTP_406_NOT_ACCEPTABLE)
             shares_sold_sum = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=fundingProject).aggregate(share=Sum('share'))['share'] or 0
             shares_sold_can_buy = fundingProject.buyPrice - shares_sold_sum
             if (((share < fundingProject.buyPrice * fundingProject.lowest_share) or
             ((share < fundingProject.buyPrice * fundingProject.lowest_share) and 
-              (share != shares_sold_can_buy))) and (share >= fundingProject.buyPrice)):
+              (share != shares_sold_can_buy))) or (share > shares_sold_can_buy)):
                 return Response(Msg.Err.Shares.create_share_not_filter,status=status.HTTP_406_NOT_ACCEPTABLE)
 
             
