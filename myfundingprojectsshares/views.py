@@ -1,5 +1,6 @@
 from myfundingprojectsshares.serializers import FundingSharesSerializer,FundingSharesSoldSerializer,FundingSharesSoldSerializer2,FundingSharesSoldedSerializer
 from rest_framework import viewsets
+from django.db.models import Sum
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from mywallet.walletfunction import wfunction
@@ -26,6 +27,13 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             fundingProjectId = sharesdata['fundingProject']
             share = sharesdata['share']
             fundingProject= FundingProjects.objects.get(id=fundingProjectId)
+            shares_sold_sum = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=fundingProject).aggregate(share=Sum('share'))['share'] or 0
+            shares_sold_can_buy = fundingProject.buyPrice - shares_sold_sum
+            if (((share < fundingProject.buyPrice * fundingProject.lowest_share) or
+            ((share < fundingProject.buyPrice * fundingProject.lowest_share) and 
+              (share != shares_sold_can_buy))) and (share >= fundingProject.buyPrice)):
+                return Response(Msg.Err.Shares.create_share_not_filter,status=status.HTTP_406_NOT_ACCEPTABLE)
+
             
             if not wfunction().walletCanUse(request.user.id,fundingProject.token,share):
                 return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -57,6 +65,12 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             sharesub = share * (-1)
 
             wfunction().walletChange(request.user.id,fundingProject.token,sharesub)
+
+            shares_sold_sum = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=fundingProject).aggregate(share=Sum('share'))['share'] or 0
+
+            if shares_sold_sum >= fundingProject.buyPrice:
+                fundingProject.status=2
+                fundingProject.save()
 
             return Response(FundingSharesSerializer(new_shares).data,status=status.HTTP_201_CREATED)
         except:
@@ -169,7 +183,7 @@ class FundingSharesSoldViewSet(viewsets.ModelViewSet):
 
 
     def destroy(self, request, pk=None):
-        print("a")
+        pass
 
     def update(self, request, pk=None):
         pass
