@@ -76,7 +76,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
                 token=data['token'],
                 buyPrice=data['buyPrice'],
                 sellPrice=data['sellPrice'],
-                gasPrice=data['gasPrice'],
+                gasPrice=0.001,
                 stopPrice=data['stopPrice'],
                 lowest_share=data['lowest_share'],
                 status=1)
