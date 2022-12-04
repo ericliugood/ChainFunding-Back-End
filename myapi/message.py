@@ -15,9 +15,12 @@ class Msg:
             search = "查詢NFT錯誤"
 
         class Shares:
-            create_money_not_enough = {'error': 'money is not enough'}
-            delete_share_not_enough = {'error': 'day is higher than 2 days'}
-            not_found_shares = {'error': 'not found shares'}
+            # create_money_not_enough = {'error': 'money is not enough'}
+            # delete_share_not_enough = {'error': 'day is higher than 2 days'}
+            # not_found_shares = {'error': 'not found shares'}
+            create_money_not_enough = "餘額不足"
+            delete_share_not_enough = "發起超過2天"
+            not_found_shares = "查無份額"
             search = "查詢份額錯誤"
 
     class NotFound:
@@ -35,5 +38,6 @@ class Msg:
         # share
         shares = "查無份額"
 
-    class Sucess:
-        delete_sucess = {'msg': 'delete sucess'}
+    class Success:
+        # delete_success = {'msg': 'delete success'}
+        delete_success = "刪除成功"

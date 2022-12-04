@@ -3,6 +3,7 @@ from mydatabase.models import FundingProjects
 from django.contrib.auth.models import User
 
 import requests
+import json
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.viewsets import ModelViewSet
@@ -60,21 +61,29 @@ class SearcherViewSet(ModelViewSet):
     def opensea(self, request):
         data = request.query_params
         ca = data.get('address')
-        response = {}
+        tid = data.get('token_id')
 
-        if ca is not None:
+        if ca and tid is not None:
             if len(ca) == 42:
-
-
                 #taddr = "0x3ad7ad283dab53511abdc5ff9f95a35f735e48f2"
                 # url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address="+taddr+"&order_direction=desc&offset=0&limit=50&include_orders=false"
 
-                url = "https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=" + ca \
+                url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address=" + ca \
                       + "&order_direction=desc&offset=0&limit=5&include_orders=false"
 
                 content = requests.get(url)
 
-                return success({"OpenSea": content})
+                process = content.json()
+                r = process.get("assets")
+                # r = r.get("id")
+
+
+
+                # req = eval(str(r))
+
+                # response = json.dumps(process)
+
+                return success(process)
 
             else:
                 return err(Msg.Err.OpenSea.search)

@@ -8,8 +8,8 @@ def success(response={}):
 
 
 def err(message):
-    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"error": message}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def notfound(message):
-    return Response(message, status=status.HTTP_404_NOT_FOUND)
+    return Response({"notfound": message}, status=status.HTTP_404_NOT_FOUND)
