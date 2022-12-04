@@ -1,5 +1,6 @@
 from myfundingprojectsshares.serializers import FundingSharesSerializer,FundingSharesSoldSerializer,FundingSharesSoldSerializer2,FundingSharesSoldedSerializer
 from rest_framework import viewsets
+from django.db.models import Sum
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from mywallet.walletfunction import wfunction
@@ -12,7 +13,18 @@ import datetime
 import pytz
 
 class FundingSharesViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+
+        if self.action == 'create':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        elif self.action == 'destroy':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        elif self.action == 'buy':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        return[]
 
     serializer_class = FundingSharesSerializer
 
@@ -25,7 +37,17 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             old_share=0
             fundingProjectId = sharesdata['fundingProject']
             share = sharesdata['share']
+            
             fundingProject= FundingProjects.objects.get(id=fundingProjectId)
+            if not (fundingProject.status == 1 and fundingProject.enabled == True):
+                return Response(Msg.Err.Shares.shares_not_enabled,status=status.HTTP_406_NOT_ACCEPTABLE)
+            shares_sold_sum = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=fundingProject).aggregate(share=Sum('share'))['share'] or 0
+            shares_sold_can_buy = fundingProject.buyPrice - shares_sold_sum
+            if (((share < fundingProject.buyPrice * fundingProject.lowest_share) or
+            ((share < fundingProject.buyPrice * fundingProject.lowest_share) and 
+              (share != shares_sold_can_buy))) or (share > shares_sold_can_buy)):
+                return Response(Msg.Err.Shares.create_share_not_filter,status=status.HTTP_406_NOT_ACCEPTABLE)
+
             
             if not wfunction().walletCanUse(request.user.id,fundingProject.token,share):
                 return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -57,6 +79,12 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             sharesub = share * (-1)
 
             wfunction().walletChange(request.user.id,fundingProject.token,sharesub)
+
+            shares_sold_sum = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=fundingProject).aggregate(share=Sum('share'))['share'] or 0
+
+            if shares_sold_sum >= fundingProject.buyPrice:
+                fundingProject.status=2
+                fundingProject.save()
 
             return Response(FundingSharesSerializer(new_shares).data,status=status.HTTP_201_CREATED)
         except:
@@ -99,7 +127,15 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             
         
 class FundingSharesSoldViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+
+        if self.action == 'create':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        elif self.action == 'buy':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        return[]
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -169,7 +205,7 @@ class FundingSharesSoldViewSet(viewsets.ModelViewSet):
 
 
     def destroy(self, request, pk=None):
-        print("a")
+        pass
 
     def update(self, request, pk=None):
         pass

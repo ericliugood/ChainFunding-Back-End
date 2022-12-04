@@ -3,16 +3,16 @@
 class Msg:
     class Err:
         class Account:  # User data CRUD error message
-            create = "創建用戶錯誤"
-            search = "查詢用戶錯誤"
+            create = {'error': "創建用戶錯誤"}
+            search = {'error': "查詢用戶錯誤"}
 
         class FundingProject:  # Funding CRUD error message
-            create = "創建集資錯誤"
-            search = "查詢集資錯誤"
+            create = {'error': "創建集資錯誤"}
+            search = {'error': "查詢集資錯誤"}
 
         class OpenSea:
-            address = "請輸入地址"
-            search = "查詢NFT錯誤"
+            address = {'error': "請輸入地址"}
+            search = {'error': "查詢NFT錯誤"}
 
         class Shares:
             # create_money_not_enough = {'error': 'money is not enough'}
@@ -25,18 +25,18 @@ class Msg:
 
     class NotFound:
         # user
-        user = "查無此用戶"
+        user ={'error':  "查無此用戶"}
 
         # nft
-        nft = "查無此NFT"
-        funding_nft = "此NFT無集資項目"
+        nft = {'error': "查無此NFT"}
+        funding_nft = {'error': "此NFT無集資項目"}
 
         # funding
-        project = "查無集資項目"
-        personal_project = "用戶無集資項目"
+        project = {'error': "查無集資項目"}
+        personal_project = {'error': "用戶無集資項目"}
 
         # share
-        shares = "查無份額"
+        shares = {'error': "查無份額"}
 
     class Success:
         # delete_success = {'msg': 'delete success'}
