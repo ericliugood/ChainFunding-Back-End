@@ -13,7 +13,18 @@ import datetime
 import pytz
 
 class FundingSharesViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+
+        if self.action == 'create':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        elif self.action == 'destroy':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        elif self.action == 'buy':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        return[]
 
     serializer_class = FundingSharesSerializer
 
@@ -116,7 +127,15 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             
         
 class FundingSharesSoldViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+
+        if self.action == 'create':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        elif self.action == 'buy':
+            permission_classes = [IsAuthenticated]
+            return [permission() for permission in permission_classes]
+        return[]
 
     def get_serializer_class(self):
         if self.action == 'create':
