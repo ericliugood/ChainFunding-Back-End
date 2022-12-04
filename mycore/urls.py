@@ -23,7 +23,7 @@ from myauthlogout.views import LogoutView
 from mysearcher.views import SearcherViewSet
 from mywallet.views import WalletAddressViewSet, TransferLogsViewSet,WalletViewSet,TransferLogsUserViewSet
 from mynotice.views import NoticeViewSet
-from myfundingprojects.views2 import FundingProjectsViewSet2
+from myfundingprojects.views import FundingProjectsViewSet2
 from myfundingprojectsshares.views import FundingSharesViewSet,FundingSharesSoldViewSet
 
 from rest_framework import permissions
