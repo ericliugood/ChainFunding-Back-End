@@ -55,7 +55,7 @@ class SearcherViewSet(ModelViewSet):
                 print(e)
                 return notfound(Msg.NotFound.project)
         else:
-            return err(Msg.Err.FundingProject.search)
+            return err(Msg.Err.FundingProject.search,status=status.HTTP_406_NOT_ACCEPTABLE)
 
     @action(detail=False)
     def opensea(self, request):
@@ -86,6 +86,7 @@ class SearcherViewSet(ModelViewSet):
                 return success(process)
 
             else:
+
                 return err(Msg.Err.OpenSea.search)
         else:
             return err(Msg.Err.OpenSea.address)

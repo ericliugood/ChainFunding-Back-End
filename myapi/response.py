@@ -13,3 +13,8 @@ def err(message):
 
 def notfound(message):
     return Response({"notfound": message}, status=status.HTTP_404_NOT_FOUND)
+
+
+def notacceptable(message):
+    return Response({"notacceptable": message}, status=status.HTTP_406_NOT_ACCEPTABLE)
+

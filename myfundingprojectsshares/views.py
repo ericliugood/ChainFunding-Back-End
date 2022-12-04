@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from myapi.message import *
+from myapi.response import *
 import datetime
 import pytz
 
@@ -40,17 +41,17 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             
             fundingProject= FundingProjects.objects.get(id=fundingProjectId)
             if not (fundingProject.status == 1 and fundingProject.enabled == True):
-                return Response(Msg.Err.Shares.shares_not_enabled,status=status.HTTP_406_NOT_ACCEPTABLE)
+                return notacceptable(Msg.Err.Shares.shares_not_enabled)
             shares_sold_sum = FundingShares.objects.filter(hands=1,enabled=True,fundingProject=fundingProject).aggregate(share=Sum('share'))['share'] or 0
             shares_sold_can_buy = fundingProject.buyPrice - shares_sold_sum
             if (((share < fundingProject.buyPrice * fundingProject.lowest_share) or
             ((share < fundingProject.buyPrice * fundingProject.lowest_share) and 
               (share != shares_sold_can_buy))) or (share > shares_sold_can_buy)):
-                return Response(Msg.Err.Shares.create_share_not_filter,status=status.HTTP_406_NOT_ACCEPTABLE)
+                return notacceptable(Msg.Err.Shares.create_share_not_filter)
 
             
             if not wfunction().walletCanUse(request.user.id,fundingProject.token,share):
-                return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
+                return notacceptable(Msg.Err.Shares.create_money_not_enough)
             
             if FundingShares.objects.filter(userData=User.objects.get(id=request.user.id),
                                                     hands=1,
@@ -88,7 +89,7 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
 
             return Response(FundingSharesSerializer(new_shares).data,status=status.HTTP_201_CREATED)
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return err(Msg.Err.Shares.create)
 
     def update(self, request, pk=None):
         pass
@@ -101,7 +102,7 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             qset = qset.filter(hands=1,id=pk)
             
             if not qset.exists():
-                return Response(Msg.Err.Shares.not_found_shares,status=status.HTTP_404_NOT_FOUND)
+                return notfound(Msg.NotFound.not_found_shares)
             
             q=qset[0]
             fundingProject= q.fundingProject
@@ -111,7 +112,7 @@ class FundingSharesViewSet(viewsets.ModelViewSet):
             dt = dtnow-dt1
             dtdays=dt.days
             if dtdays >= 2:
-                return Response(Msg.Err.Shares.delete_share_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
+                return notacceptable(Msg.Err.Shares.delete_share_not_enough)
             q.enabled=False
             wfunction().walletChange(request.user.id,fundingProject.token,q.share)
             q.save()
@@ -174,13 +175,13 @@ class FundingSharesSoldViewSet(viewsets.ModelViewSet):
                                                     fundingProject= fundingProject,
                                                     enabled=True)
         if not (fundingProject.status == 2 and fundingProject.enabled == True):
-            return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
+            return notacceptable(Msg.Err.Shares.create_money_not_enough)
 
         if not myfdshares.exists():
-            return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
+            return notacceptable(Msg.Err.Shares.create_money_not_enough)
         old_shares=myfdshares[0]
         if not old_shares.share >= share:
-            return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
+            return notacceptable(Msg.Err.Shares.create_money_not_enough)
         new_shares_sold = SharesSold.objects.create(userData=User.objects.get(id=self.request.user.id),
                                                     fundingProject=fundingProject,
                                                     share=share,
@@ -223,7 +224,7 @@ class FundingSharesSoldViewSet(viewsets.ModelViewSet):
             sharesSold= SharesSold.objects.get(id=sharesSoldId)
             price = (share/sharesSold.share)*sharesSold.price
             if not wfunction().walletCanUse(request.user.id,sharesSold.token,price):
-                return Response(Msg.Err.Shares.create_money_not_enough,status=status.HTTP_406_NOT_ACCEPTABLE)
+                return notacceptable(Msg.Err.Shares.create_money_not_enough)
             
             
             if FundingShares.objects.filter(userData=User.objects.get(id=request.user.id),
