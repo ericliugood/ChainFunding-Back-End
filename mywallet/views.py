@@ -1,8 +1,8 @@
 from django.utils.timezone import now
-from mydatabase.models import WalletAddress, TransferLogs,Wallet
+from mydatabase.models import WalletAddress, TransferLogs,Wallet,TransferLogsUser
 from django.contrib.auth.models import User
 from django.db.models import Q
-from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer,WalletSerializer
+from mywallet.serializers import WalletAddressSerializer, TransferLogsSerializer,WalletSerializer,TransferLogsUserSerializer
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
@@ -73,6 +73,27 @@ class TransferLogsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):  
         wok = WalletAddress.objects.values_list('walletAddress',flat=True).filter(userData=self.request.user,enabled=True)
         return super().get_queryset().filter(Q(fromAddress__in=wok)|Q(toAddress__in=wok))
+
+    def create(self, request, *args, **kwargs):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request):
+        pass
+
+class TransferLogsUserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated ]
+
+    serializer_class = TransferLogsUserSerializer
+    queryset = TransferLogsUser.objects.all()
+
+    def get_queryset(self):  
+        return super().get_queryset().filter(Q(fromUserData=self.request.user)|Q(toUserData=self.request.user))
 
     def create(self, request, *args, **kwargs):
         pass

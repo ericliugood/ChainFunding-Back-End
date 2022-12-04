@@ -21,7 +21,7 @@ from myauthlogout.views import LogoutView
 
 # mysearcher
 from mysearcher.views import SearcherViewSet
-from mywallet.views import WalletAddressViewSet, TransferLogsViewSet,WalletViewSet
+from mywallet.views import WalletAddressViewSet, TransferLogsViewSet,WalletViewSet,TransferLogsUserViewSet
 from mynotice.views import NoticeViewSet
 from myfundingprojects.views2 import FundingProjectsViewSet2
 from myfundingprojectsshares.views import FundingSharesViewSet,FundingSharesSoldViewSet
@@ -35,6 +35,7 @@ router = DefaultRouter(trailing_slash=False)
 router.register('search', SearcherViewSet, 'search')
 router.register('walletaddress', WalletAddressViewSet, 'walletaddress')
 router.register('transferlog', TransferLogsViewSet, 'transferlog')
+router.register('transferloguser', TransferLogsUserViewSet, 'transferloguser')
 router.register('notice', NoticeViewSet, 'notice')
 router.register('fundingprojects', FundingProjectsViewSet2, 'fundingprojects')
 router.register('fundingshares', FundingSharesViewSet, 'fundingshares')
