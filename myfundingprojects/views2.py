@@ -53,10 +53,10 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
         elif self.action == 'update':
             permission_classes = [IsAuthenticated]
             return [permission() for permission in permission_classes]
-        elif self.action == 'like':
+        elif self.action == 'destroy':
             permission_classes = [IsAuthenticated]
             return [permission() for permission in permission_classes]
-        elif self.action == 'retrieve':
+        elif self.action == 'like':
             permission_classes = [IsAuthenticated]
             return [permission() for permission in permission_classes]
         return[]
