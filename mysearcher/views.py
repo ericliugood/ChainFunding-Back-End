@@ -71,11 +71,26 @@ class SearcherViewSet(ModelViewSet):
                 url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address=" + ca \
                       + "&order_direction=desc&offset=0&limit=5&include_orders=false"
 
-                content = requests.get(url)
+                response = requests.get(url)
 
-                process = content.json()
-                r = process.get("assets")
+                process = response.json()  # dict
+                process = process["assets"]  # list
+                for i in range(len(process)):
+                    p = process[i]  # dict
+                    return success({
+                        "id": p["id"]
+                    })
+                    # content = p["id"]
+                # process = process[i]  # dict
+                # content = process["id"]
+                # res = {}
                 # r = r.get("id")
+                # for i in process["assets"]:
+                #     #
+                #     res.update(i)
+                # t = type(process)
+
+
 
 
 
@@ -83,7 +98,7 @@ class SearcherViewSet(ModelViewSet):
 
                 # response = json.dumps(process)
 
-                return success(process)
+                #return success(i)
 
             else:
 
