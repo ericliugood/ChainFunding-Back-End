@@ -63,30 +63,50 @@ class SearcherViewSet(ModelViewSet):
         ca = data.get('address')
         tid = data.get('token_id')
 
-        if ca and tid is not None:
-            if len(ca) == 42:
+        if (ca is not None) and (len(ca) == 42):
+            if tid is not None:
                 #taddr = "0x3ad7ad283dab53511abdc5ff9f95a35f735e48f2"
                 # url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address="+taddr+"&order_direction=desc&offset=0&limit=50&include_orders=false"
 
                 url = "https://testnets-api.opensea.io/api/v1/assets?token_ids="+tid+"&asset_contract_address=" + ca \
                       + "&order_direction=desc&offset=0&limit=5&include_orders=false"
-
-                content = requests.get(url)
-
-                process = content.json()
-                r = process.get("assets")
-                # r = r.get("id")
-
-
-
-                # req = eval(str(r))
-
-                # response = json.dumps(process)
-
-                return success(process)
-
             else:
+                url = "https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=" + ca \
+                      + "&order_direction=desc&offset=0&limit=5&include_orders=false"
 
-                return err(Msg.Err.OpenSea.search)
+            response = requests.get(url)
+            process = response.json()  # dict
+            process = process["assets"]  # list
+
+            return success({
+                "assets": [{
+                    "id": p["id"],
+                    "num_sales": p["num_sales"],
+                    "image_url": p["image_url"],
+                    "image_preview_url": p["image_preview_url"],
+                    "image_thumbnail_url": p["image_thumbnail_url"],
+                    "image_original_url": p["image_original_url"],
+                    "animation_url": p["animation_url"],
+                    "animation_url": p["animation_url"],
+                    "name": p["name"],
+                    "description": p["description"],
+                    "external_link": p["external_link"],
+                    "asset_contract": p["asset_contract"],
+                    "permalink": p["permalink"],
+                    "token_metadata": p["token_metadata"],
+                    "last_sale": p["last_sale"],
+                    "top_bid": p["top_bid"],
+                    "listing_date": p["listing_date"],
+                    "supports_wyvern": p["supports_wyvern"],
+                    "rarity_data": p["rarity_data"],
+                    "transfer_fee": p["transfer_fee"],
+                    "transfer_fee_payment_token": p["transfer_fee_payment_token"],
+                    "token_id": p["token_id"]
+
+                }
+                    for p in process
+                ]
+
+            })
         else:
             return err(Msg.Err.OpenSea.address)
