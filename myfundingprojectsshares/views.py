@@ -202,7 +202,7 @@ class FundingSharesSoldViewSet(viewsets.ModelViewSet):
             old_shares.enabled=False
             old_shares.save()
 
-            return Response(FundingSharesSoldedSerializer(new_shares_sold).data,status=status.HTTP_201_CREATED)
+            return Response(FundingSharesSoldSerializer(new_shares_sold).data,status=status.HTTP_201_CREATED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
