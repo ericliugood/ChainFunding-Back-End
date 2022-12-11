@@ -162,44 +162,49 @@ class FundingSharesSoldViewSet(viewsets.ModelViewSet):
         
 
     def create(self, request, *args, **kwargs):
-        sharessolddata = request.data
-        
+        try:
+            sharessolddata = request.data
+            
 
-        fundingProjectId = sharessolddata['fundingProject']
-        share = sharessolddata['share']
-        token = sharessolddata['token']
-        price = sharessolddata['price']
-        fundingProject= FundingProjects.objects.get(id=fundingProjectId)
-        myfdshares=FundingShares.objects.filter(userData=User.objects.get(id=request.user.id),
-                                                    
-                                                    fundingProject= fundingProject,
-                                                    enabled=True)
-        if not (fundingProject.status == 2 and fundingProject.enabled == True):
-            return notacceptable(Msg.Err.Shares.create_money_not_enough)
+            fundingProjectId = sharessolddata['fundingProject']
+            share = sharessolddata['share']
+            token = sharessolddata['token']
+            price = sharessolddata['price']
+            fundingProject= FundingProjects.objects.get(id=fundingProjectId)
+            myfdshares=FundingShares.objects.filter(userData=User.objects.get(id=request.user.id),
+                                                        
+                                                        fundingProject= fundingProject,
+                                                        enabled=True)
+            if not (fundingProject.status == 2 and fundingProject.enabled == True):
+                return notacceptable(Msg.Err.Shares.create_money_not_enough)
 
-        if not myfdshares.exists():
-            return notacceptable(Msg.Err.Shares.create_money_not_enough)
-        old_shares=myfdshares[0]
-        if not old_shares.share >= share:
-            return notacceptable(Msg.Err.Shares.create_money_not_enough)
-        new_shares_sold = SharesSold.objects.create(userData=User.objects.get(id=self.request.user.id),
-                                                    fundingProject=fundingProject,
-                                                    share=share,
-                                                    token=token,
-                                                    price=price,
-                                                    enabled=True    )
-        new_shares_sold.save()
+            if not myfdshares.exists():
+                return notacceptable(Msg.Err.Shares.create_money_not_enough)
+            old_shares=myfdshares[0]
+            if not old_shares.share >= share:
+                return notacceptable(Msg.Err.Shares.create_money_not_enough)
+            new_shares_sold = SharesSold.objects.create(userData=User.objects.get(id=self.request.user.id),
+                                                        fundingProject=fundingProject,
+                                                        share=share,
+                                                        token=token,
+                                                        price=price,
+                                                        enabled=True    )
+            new_shares_sold.save()
 
-        if old_shares.share - share > 0:
+            if old_shares.share - share > 0:
 
-            new_shares = FundingShares.objects.create(userData=User.objects.get(id=request.user.id),
-                                                    hands=2,
-                                                    fundingProject= fundingProject,
-                                                    enabled=True,
-                                                    share=old_shares.share - share)
-            new_shares.save()                                
-        old_shares.enabled=False
-        old_shares.save()
+                new_shares = FundingShares.objects.create(userData=User.objects.get(id=request.user.id),
+                                                        hands=2,
+                                                        fundingProject= fundingProject,
+                                                        enabled=True,
+                                                        share=old_shares.share - share)
+                new_shares.save()                                
+            old_shares.enabled=False
+            old_shares.save()
+
+            return Response(FundingSharesSoldedSerializer(new_shares_sold).data,status=status.HTTP_201_CREATED)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
