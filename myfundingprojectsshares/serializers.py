@@ -22,12 +22,12 @@ class FundingSharesSoldSerializer2(ModelSerializer):
         if obj.enabled == True:
             a = SharesSolded.objects.filter(sharesSold=obj).aggregate(share=Sum('share'))['share'] or 0
             return a
-        return obj.price
+        return obj.share
     def get_shares_sold_sum_scale(self,obj):
         if obj.enabled == True:
             a = SharesSolded.objects.filter(sharesSold=obj).aggregate(share=Sum('share'))['share'] or 0
-            return a/obj.price
-        return obj.price/obj.price
+            return a/obj.share
+        return obj.share/obj.share
 
 class FundingSharesSoldedSerializer(ModelSerializer):
     class Meta:
