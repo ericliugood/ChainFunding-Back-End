@@ -22,6 +22,8 @@ class Msg:
             create_money_not_enough = "餘額不足"
             delete_share_not_enough = "發起超過2天"
             search = "查詢份額錯誤"
+            create_share_not_filter = "不符合集資條件"
+            shares_not_enabled = "已經集資過了"
 
     class NotFound:
         # user

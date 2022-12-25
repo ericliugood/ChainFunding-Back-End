@@ -27,7 +27,7 @@ class FundingProjectsViewSet2(viewsets.ModelViewSet):
 
     def get_queryset(self):  # added string
         if self.action == 'list':
-            return FundingProjects.objects.all()
+            return FundingProjects.objects.filter(enabled=True)
         elif self.action == 'update':
             return FundingProjects.objects.filter(fundraiser=User.objects.get(id=self.request.user.id))
         elif self.action == 'retrieve':
