@@ -4,7 +4,7 @@ from pytz import timezone
 
 class WalletAddress(models.Model):
     userData = models.ForeignKey(User, on_delete=models.PROTECT)
-    walletAddress = models.CharField(max_length=36)
+    walletAddress = models.CharField(max_length=45)
     create_time = models.DateTimeField(auto_now_add=True)
     delete_time = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(default=True)
@@ -24,8 +24,8 @@ class Wallet(models.Model):
 
 
 class TransferLogs(models.Model):
-    fromAddress = models.CharField(max_length=36)
-    toAddress = models.CharField(max_length=36)
+    fromAddress = models.CharField(max_length=45)
+    toAddress = models.CharField(max_length=45)
     amount = models.DecimalField(max_digits=128, decimal_places=18)
     token = models.CharField(max_length=18)
     time = models.DateTimeField(null=True)
