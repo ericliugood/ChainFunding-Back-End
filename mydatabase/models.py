@@ -37,7 +37,7 @@ class TransferLogs(models.Model):
 
 
 class FundingProjects(models.Model):
-    nftId = models.PositiveIntegerField()
+    nftId = models.CharField(max_length=255)
     nftContractAddress = models.CharField(max_length=255)
     nftName = models.CharField(max_length=255)
     startTime = models.DateTimeField()
